@@ -1,0 +1,55 @@
+Work Experience: 6 month as a Software Engineer Bangalore
+Position: SDE1 at Amazon
+Location: Bangalore, India
+Date: 25th jan, 2020
+
+Contacted Recruiter through Linkedin Got an onsite Invitation for Drive for SDE1 and SDE2 after Profile Shortlist
+Interview Process:
+
+Round 1: offline coding Test overall 40 candidates invited for SDE1 and SDE2 Roles
+
+Two questions to be finished in 45 (minutes ) they came with different set of question paper for everyone
+My questions were:
+1.https://leetcode.com/problems/longest-palindromic-subsequence/ (DP) I wrote Recursive + DP Both
+2.https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+I was able to solve both problems , Result announced after 2 hours I got selected for next rounds
+
+Round 2: DS & Algo(Problem solving 45 mins)- 25th Jan, 2020
+2 SDE came they told me to come with us and we entered in a room and they told me the format : we will give you the problems first we will discuss the approach then you can write production level code with covering all cases.
+
+https://leetcode.com/problems/binary-tree-maximum-path-sum/ (with some variation I wrote after discussion ,Interviewer found one test case missing and he pointed out and I modified )
+https://leetcode.com/problems/all-paths-from-source-to-target/ (Variation of this problem) I was able to complete this solution and they took the paper and told me wait for your next round .
+Round 3: 45 Mins (25th jan 2020)
+1.Problem statement :
+A cricket match is going on and you are given 3 integers R, B and W which denote the number of runs, balls and wickets. One can score 0, 1, 2, 3, 4,6 or a wicket in a single ball in a cricket match. The task is to count the number of ways in which a team can score exactly R runs in exactly B balls with at-most W wickets. Since the number of ways will be large, print the answer modulo 1000000007.
+its a Dynamic programming problem for the first 20 mins I was not able to get any idea but interviewer helped me to understand the problem ,I was able to wrote recursive solution with help He told me no need to write DP code its fine ,But He was not happy as I took almost 30 minutes ..
+
+Then He discussed my current company work and Projects only for 5 mins then He asked some LP.
+1.)What will do when you will get a chance to work with a completely new technology .
+2.)Why Amazon ?
+
+only 15 mins left He asked me How good you are in Tree
+2.He asked me to print the shortest distance between 2 nodes in binary tree .
+https://leetcode.com/discuss/interview-question/algorithms/125084/given-a-binary-search-tree-find-the-distance-between-2-nodes (similar to this one ) in the first attempt I told I can find LCA and get the distance He told to write code in 10 mins ., While writing code he was looking at my paper ..when I finished He told me take some coffee and wait.
+
+after waiting for 1 hour Recruiter called me for 4th round and told me that my 3rd round was not so good so perform well in this round .
+Round 4: (45 min)
+1.https://leetcode.com/problems/first-missing-positive/ I was not aware of (n) Time and O(1) solution gave Hashing based solution first after some couple of hints He told me to change some values to negative I tried and came with approach he told no need to write code
+2.https://leetcode.com/problems/sum-of-nodes-with-even-valued-grandparent/ similar to this one He asked me one tree problem something like triplet of Grandfather , father and chid node in a tree less than SUM , I tried recursive approach and wrote the code..
+
+After this round HR told we will call on next weekend after further Discussion with the team.
+I got a call for next round Hopefully , again went to Amazon Bangalore office HR told me this will be a famous Bar Raiser .
+
+Round 5: With HM He was 10 YOE+ exp. almost( 1 week later on weekend )
+He stared asking some LP after Introduction ,asked me some OS concepts (Virtual memory ) then what is TLB in OS which cache will you use to store recent pages I told I can use LRU I know he will go in depth He asked me to write code for LRU
+1.https://leetcode.com/problems/lru-cache/ He told me you can use STL and discussed time and space complexity.
+He told me I am giving interview for Amazon Prime video Team and some 10 mins discussion on current company work and some Leadership Principes questions based on my current work in my company, one of those , What will you do when you are reaching a deadline for you project and on one side manager is waiting and on other side customer is waiting but you are thinking I am not able to finish the task How will you handle whom you talk etc..
+
+Interview was over but I was happy as this was the first time I went onsite as during my campus placement I was not able to attend amazon placements due to low CGPA, I know my round 3 was bad but I was hoping that I will get selected But I got rejection mail after 2 week
+
+Here is the mail :
+Dear Abhishek,
+
+Thank you for taking the time to interview with us. The team enjoyed meeting with you and getting a better understanding of your interests and capabilities. In reviewing our project needs and your current skill set, we were unable to find a match at this time. Should there be future opportunities which are a fit, we will reach out to you directly. We want to wish you the very best and thank you for your time.
+
+NOTE: I am saying on my experience all the Guys preparing for Amazon having some experience(1YOE+) your interview will something different from New Grad/Intern/fresher you will be tested upon (Problem solving + Current company work + LP) Be prepared and current company work is important they will ask lot of LP on your work .approach
