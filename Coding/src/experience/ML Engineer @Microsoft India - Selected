@@ -1,0 +1,66 @@
+I received the confirmation for Machine Learning Engineer from Microsoft Recruitment Team for Machine Learning Engineer. In this post, I'll be sharing my journey and hope it will be helpful for some of you. I'm having 2+ of experience as Machine Learning Engineer working at startups.
+
+Interview Process:
+
+Week1 (Wednesday) -
+I got an Inmail from Microsoft Recruiter over for an opportunity related to Software Engineering and Machine Learning in Microsoft. I shared with her my resume and then I got a call within an hour for explaning the process. I was told that my resume will be forwarded to hiring manager, if selected another recruiter from staffing team will contact me and I'll be having Interview on next Saturday (Week2 - Saturday).
+
+Week2 (Wednesday) -
+I got call from another recruiter informing, my profile is shortlisted for interview. I'll be having 4 round of interview coming saturday (week2 - Saturday). The interview will be around Data Structure & Algorithm, Design and Machine Learning. I was continuously followed-up to check my availability for interview. The recruiter is just awesome for ensuring very smooth interview experience for me.
+
+Week2 (Saturday) : The Interview Day -
+Round 1 - Data Structure & Algorithm Questions (1 hour):
+a) Question1:
+A larger string a list of smaller strings are given. I was asked to put opening and closing xml tag (say italic). Remove are pair of tags within the longest pair of tags. Its extended version of merging intersecting intervals: https://leetcode.com/problems/merge-intervals/. I was asked to write Test Cases, I've written 3 test cases to test edge cases.
+
+b) Question2:
+Two arrays are given representing where each index represents slots for free and busy for two different persons. I was asked to find maximum contiguous slot size when both are free.
+Follow-up: What is maximum available slot if I was allowed to change just 1 busy to free.
+Solution: Extract all (start, end) pair for intersecting slots and modify merge interval a bit to find maximum slot size with help of two busy (and free) array of two persons.
+
+I easily solved both the problems. But I asked a lot of clarifying question and I started with brute force and build on top of it with logical progression.
+
+Round 2 - Low Level Desing (1 hour)
+a) Design LRU from scratch:
+I solved with Double Linked List and Hash Map approach. I just knew this, build it using botton up approach and as I keep moving, I kept getting logical progression to solve the problem.
+b) How to enable Multiple user simultaneously use (or block) using LRU to ensure consisitency.
+
+Round 3 - Hiring Manager (1.5 hour) { I only had 3 rounds though was asked for 4)
+a) My resume and experience is deeply discussed. All my projects (ML projects) are deeply discussed with what approach I had taken, what was my role in project, How I solved few challenges and much more.
+b) The team which I was getting hired for is explained to me.
+c) What I wanted in My next is asked, I explained clearly.
+d) I asked about my possible role if selected, it was clearly explain with all details.
+
+Week4 (Tuesday) -
+I received mail from Microsoft, I was selected and asked for all the details and supporting documents.
+
+My Preparation
+
+Coding (Leetcode Solution):
+I prepared for nearly 1 year from scratch. I knew Data Structure & Algorithm well in theory. That's only background with a 1+ year experience in Machine Learning. I tried Leetcode monthly premium for 2 months and find it very useful and bought Leetcode annual premium subscription in November 2019.
+
+I solved following:
+i) All topics in explore
+ii) Top Interview Question (Easy & Medium)
+iii) Interview Preparation (Google and Amazon); solved Microsoft Question after recruiter message in Linkedin and completed on Thurday evening.
+iv) Daily Coding Challenge for 3 months (June, July and August)
+
+I started Leetcode in July 2019 and till April 2020, I used to read question could think of very basic approach, but didn't know how to code the approach. I read all solution, understand solution and code every solution by copying the solution and understanding the process. Since April 2020, I could think of good solutions and build solutions. I being to write code myself for different approach. So, only think helped me is sticking long.
+
+Behavioural Interview (I was not asked btw):
+i) Linkedin Interview Question available in Linkedin
+ii) Amazon Leadership priniciple (I understand deeply)
+iii) Collected 6 stories from past experiences
+iv) Framed 2 stories for each principle
+v) Written 2 answer for each Interview Question available in Linkedin
+
+It took me total 3 months of preparation for behavioural interview
+
+Curating Linkedin Profile
+a) Linkedin Premium is the key.
+
+b) A year back, I started getting connected with recruiter, software engineer from FAANG companies, spammed few of them (obviously no response). Also got connected with ML Engineers. I shared content related to ML and had a discoverable profile in 2nd degree for any person looking for ML. I had SSI score of over 70 and building relationship is 22/25.
+
+c) I had lots of profile visits by recruiter from FAANG companies but no message, my profile is getting into search results of FAANG recruiters and 'Machine Learning Engineer' was top search keyword for my profile. It was tailored with all relevant details for searchable.
+
+Finally, I got searched when I was prepared and now feeling happy. I would like to thank Leetcode and the community, it helped me a lot to get this opportunity. I hope this post will help some of you in someway.

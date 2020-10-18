@@ -1,0 +1,70 @@
+Hello Everyone, I would like to start the post by thanking the entire LC community for helping me with my preparations. I recently applied and interviewed for Amazon for SDE2 role for their Amazon Prime team and I would like share my experience for this.
+
+YOE - 6
+
+OA Round -
+I can't remember the questions exactly in this but one was based on graph and the other one was based on string searching. I was able to pass 50% of the total testcases in the given questions within the given time window and thereby got selected for the onsite virtual rounds.
+
+Round 1 -
+Coding round + LP -
+Question 1. Given an array of integers and you can jump from the current index to another index either left or right by the current value of the index. For example - if you have something like [3,2,4,1,5]. So from index[4] i.e val = 1, I can take a left and come to 4 or come to 5 (jumping 1 in either direction). Now, given a start and end point we need to find the smallest number of steps to reach the end point.
+Question 2. String sliding window problem. Given a string and another substring and we need to find if any permutation of substring is present in the given string.
+
+This was followed by some LP questions.
+
+I was able to code both the problems in the given time.
+
+Round 2 -
+Coding Round + LP
+Question 1 - Given a 2D matrix with start, end and some obstacles, I was asked to find the minimum path to reach from start to end.
+Question 2 - Extended the question to say if you are allowed to remove exactly 1 obstacle, what will be the minimum number of steps.
+
+I was able to code both of them with still some time left. So the interviewer extended the question further to ask if we are allowed to remove K obstacles, what we can do. I was just asked to give the approach which I gave and explained him orally. It can be done with DFS+DP (LC Hard problem No. 1293).
+
+It wad followed by some LP questions
+
+After a week, my design rounds were scheduled.
+
+Round 3 -
+Bar Raiser Round + LP
+It was supposed to focus on API desigining and LLD.
+Some LP questions followed by a Design question where we need to design something like google photos where we can just upload and download photos. Because of the time constraint, we sticked to only these two services. I was asked the quick block diagram (which is btw very hard to make on these online portals in such short time), authentication service, some follow up questions on choice of DB, data entities and how will we store it. I was able to answer them.
+In last 5 minutes I was asked to write the function body of downloadPhotos API. I wasn't very confident what to do here as I was expecting something more generic for LLD question considering the previous interview experiences of Amazon posted online. Also I haven't had a hands on experience on databases so I messed up this part I think.
+I tried to quickly make something like
+
+ImageClassObj downloadPhotos(string userID, string fileID) {
+      bool flag = AuthenticateUser(userID);
+	  if (!flag) return;
+	  /* I was using consistent hashing so we need to see which DB it is located */
+	  DataBase DBLocationId = getDataBaseLocation(fileID);
+	  ImageClassOBj res = downloadTheFile(filedID, DBLocationId);
+	  return res;
+}
+Please let me know how to answer such kind of questions for my future interview experiences.
+
+Round 4 -
+Hiring Manager Round + LP
+It was supposed to focus on scalability and fault tolerance
+I was asked how my previous rounds went and how has been the experience so far. I was then asked to design Instagram and I was able to answer that in thirty minutes because I had practised that a number of times. He was convinced that we have attended this question from all aspects and hence went on to move to a new question.
+I was asked that if there is a huge file storage device with many movies in it and a new movie comes as an argument, how to search and make sure that if we already have that movie in the file or not (Ofcourse not by name as names can be different). I told the interviewer about checksum computation by dividing the file into chunks and comparing the checksum of my present file with the files present. Then we discussed the hashing algorithm behind computing checksum, how to shard the files in order to narrow down the search and so on. He was convinced with my answer.
+
+After one week, I got the verdict that I was rejected because my LLD was not upto the mark. I would like to improve and thereby requesting help from the community to tell me how can the question of writing API downloadPhotos be answered considering I don't have hands on experience on writing any downloading API on production level.
+
+I have other interviews lined up and hence It can immensely help in improving myself for future.
+
+Just some questions, is the API supposed to be designed like a web api with microservices? or just like a standard API of a class?
+
+If it is a web api I would of done something like this:
+
+// note this definition would need to be async as well.
+ImageClassObj downloadPhotos(string userID, string fileID) {
+1. get auth token from authentication service, but I've seen API gateway's that would prevent you from even getting here without auth. This would be an async/await process.
+2. if invalid return Not Auth 401
+3. validate the file id is not null or whitespace [typically the API layer will do this with a required tag in C# or your programming language of choice]
+4. return BadRequest 400
+5. for this example lets just say we have a read/write database
+6. get database connector [how/where you store the connection string is up to you]
+7. try and find the image in the DB
+8. if not found return 404
+9. return the image serliazed as json.
+}
