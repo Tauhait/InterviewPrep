@@ -19,23 +19,34 @@ class Node {
 */
 
 class Solution {
-    private HashMap<Node, Node> visited = new HashMap<Node, Node>();
     public Node cloneGraph(Node node) {
         if(node == null){
             return node;
         }
         
-        if(visited.containsKey(node)){
-            return visited.get(node);
+        HashMap<Node, Node> visited = new HashMap<Node, Node>();
+        
+        Queue<Node> bfsQ = new LinkedList<Node>();
+        
+        bfsQ.add(node);
+        visited.put(node, new Node(node.val, new ArrayList<Node>()));
+        
+        while(!bfsQ.isEmpty()){
+            Node q = bfsQ.remove();
+            
+            for(Node neighbor : q.neighbors){
+                //visit the neighbor and make its clone
+                if(!visited.containsKey(neighbor)){
+                    
+                    bfsQ.add(neighbor);
+                    visited.put(neighbor, new Node(neighbor.val, new ArrayList<Node>()));                    
+                }
+                // Add the clone of the neighbor to the neighbors of the clone node "q".
+                Node neighborClone = visited.get(neighbor);
+                Node qClone = visited.get(q);
+                qClone.neighbors.add(neighborClone);
+            }
         }
-        
-        Node cloneNode = new Node(node.val, new ArrayList<Node>());
-        
-        visited.put(node, cloneNode);
-        
-        for(Node neighbor : node.neighbors){
-            cloneNode.neighbors.add(cloneGraph(neighbor));
-        }
-        return cloneNode;
+        return visited.get(node);
     }
 }
