@@ -29,9 +29,13 @@ class Solution {
                 int newX = thisPeak.x + dir[0];
                 int newY = thisPeak.y + dir[1];
                 if(isValid(newX, newY, rows, cols) && !visited[newX][newY]){
+                    //calc hike to the adjacent peak
                     int hike = Math.abs(heights[thisPeak.x][thisPeak.y] - heights[newX][newY]);
+                    //calc the route's bottleneck to newX, newY Peak: problem specific req
                     int maxHike = Math.max(hikes[thisPeak.x][thisPeak.y], hike);
+                    //update hike needed
                     hikes[newX][newY] = Math.min(hikes[newX][newY], maxHike);
+                    //add new peak into queue
                     pQueue.add(new Peak(newX, newY, hikes[newX][newY]));         
                 }
             }
