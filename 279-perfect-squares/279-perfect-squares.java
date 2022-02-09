@@ -1,4 +1,9 @@
 class Solution {
+    /*
+    Note: in a typical BFS algorithm, the queue variable usually would be of array or list type. 
+    However, here we use the set type, in order to eliminate the redundancy of remainders within the same level. 
+    As it turns out, this tiny trick could even provide a 5 times speedup on running time.
+    */
   public int numSquares(int n) {
 
     ArrayList<Integer> square_nums = new ArrayList<Integer>();
@@ -19,7 +24,7 @@ class Solution {
           if (remainder.equals(square)) {
             return level;
           } else if (remainder < square) {
-            break;
+            //break;
           } else {
             next_queue.add(remainder - square);
           }
