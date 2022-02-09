@@ -2,31 +2,33 @@ class Solution {
     public int numSquares(int n) {
         Queue<Integer> perfectSqQueue = new LinkedList();
         Queue<Integer> intermediateN = new LinkedList();
-        int sqRootOfN = (int) Math.sqrt(n);
-        for(int i = 1; i <= sqRootOfN; i++){
+        int sqrootN = (int)Math.sqrt(n);
+        for(int i = 1; i <= sqrootN; i++){
             int squareOfI = i * i;
-            perfectSqQueue.offer(squareOfI);
+            perfectSqQueue.add(squareOfI);
         }
-        intermediateN.offer(n);
-        int perfectSqN = perfectSqQueue.size(); 
+        intermediateN.offer(n); 
         int depth = 0;
         while(!intermediateN.isEmpty()){
-            int size = intermediateN.size();
+            int size = intermediateN.size();  
             while(size-- > 0){
-                int newN = intermediateN.poll();
-                for(int sq = 1; sq <= perfectSqN; sq++){
-                    int perfectSq = perfectSqQueue.poll();
-                    perfectSqQueue.offer(perfectSq);
-                    if(newN - perfectSq == 0){
+                Integer newN = intermediateN.poll();
+                Iterator<Integer> perfectQIter = perfectSqQueue.iterator();
+                while(perfectQIter.hasNext()){
+                    Integer sq = perfectQIter.next();
+                    //System.out.print(sq + " ");
+                    if(newN.equals(sq)){
                         return depth + 1;
-                    }
-                    if(perfectSq < newN){
-                        intermediateN.offer(newN - perfectSq);
-                    }                    
-                }                
+                    }else if(newN < sq){
+                        break;
+                    }else {
+                        intermediateN.offer(newN - sq);
+                    }                   
+                }
+                //System.out.println();
             }
             depth++;
         }
-        return -1;
+        return depth;
     }
 }
