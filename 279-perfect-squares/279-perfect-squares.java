@@ -6,9 +6,9 @@ class Solution {
     */
   public int numSquares(int n) {
 
-    ArrayList<Integer> square_nums = new ArrayList<Integer>();
+    ArrayList<Integer> square_numsList = new ArrayList<Integer>();
     for (int i = 1; i * i <= n; ++i) {
-      square_nums.add(i * i);
+      square_numsList.add(i * i);
     }
 
     Set<Integer> queue = new HashSet<Integer>();
@@ -18,13 +18,15 @@ class Solution {
     while (queue.size() > 0) {
       level += 1;
       Set<Integer> next_queue = new HashSet<Integer>();
-
+        //runs at each level
       for (Integer remainder : queue) {
-        for (Integer square : square_nums) {
+        for (Integer square : square_numsList) {
           if (remainder.equals(square)) {
             return level;
           } else if (remainder > square) {
             next_queue.add(remainder - square);
+          } else {
+              break;//if rem <  current sq, then it will happen for rest of the sq in the list so break
           }
         }
       }
