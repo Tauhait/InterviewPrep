@@ -23,9 +23,7 @@ class Solution {
         for (Integer square : square_nums) {
           if (remainder.equals(square)) {
             return level;
-          } else if (remainder < square) {
-            //break;
-          } else {
+          } else if (remainder > square) {
             next_queue.add(remainder - square);
           }
         }
