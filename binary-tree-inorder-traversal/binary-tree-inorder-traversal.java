@@ -7,6 +7,8 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
+//Check out from solutions in Approach 3: Morris Traversal
+//In this method, we have to use a new data structure-Threaded Binary Tree
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
         if(root == null)
