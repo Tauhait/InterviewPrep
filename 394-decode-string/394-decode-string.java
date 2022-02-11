@@ -4,9 +4,7 @@ class Solution {
         Stack<String> repeatStk = new Stack();
         repeatStk.push("#");
         Stack<String> substrStk = new Stack();
-        //StringBuilder subseq = new StringBuilder();
         char[] inputSeq = s.toCharArray();
-        //boolean numericStatus = false;
         for(char c : inputSeq){
             if(Character.isDigit(c)){
                 repeatStk.push(Character.toString(c));                
@@ -16,12 +14,10 @@ class Solution {
             }else if(Character.isLetter(c)){
                 substrStk.push(Character.toString(c));
             }else {
-                //numericStatus = true;
                 StringBuilder subseq = new StringBuilder();
                 while(!substrStk.isEmpty() && !substrStk.peek().equals("[")){
                     subseq.insert(0, substrStk.pop());
                 }
-                //System.out.println(subseq.toString());
                 if(substrStk.peek().equals("[")){
                     substrStk.pop();//pop out '['
                 }
@@ -30,8 +26,6 @@ class Solution {
                 
                 repeatStk.pop();//pop out top # boundary
                 StringBuilder repeater = new StringBuilder();
-                //System.out.println(repeatStk.size());
-                //System.out.println(repeatStk.peek());
                 while(!repeatStk.isEmpty() && !repeatStk.peek().equals("#")){
                     repeater.insert(0, repeatStk.pop());
                 }
@@ -41,16 +35,10 @@ class Solution {
                 }
                 
                 String singleSubseq = subseq.toString();
-                //System.out.println(singleSubseq);
                 while(repeat-- > 0){
-                    //System.out.println(subseq);
                     subseq.append(singleSubseq);
                 }
-                //System.out.println(subseq);
-                //System.out.println("----");
                 substrStk.push(subseq.toString());
-                //System.out.println(substrStk.peek());
-                //System.out.println("----");
                 
             }
         }
