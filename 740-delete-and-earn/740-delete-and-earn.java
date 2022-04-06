@@ -1,31 +1,40 @@
 class Solution {
     public int deleteAndEarn(int[] nums) {
+        int maxNumber = 0;
         HashMap<Integer, Integer> points = new HashMap<>();
         
-        // Precompute how many points we gain from taking an element
         for (int num : nums) {
             points.put(num, points.getOrDefault(num, 0) + num);
+            maxNumber = Math.max(maxNumber, num);
         }
         
-        List<Integer> elements = new ArrayList<Integer>(points.keySet());
-        Collections.sort(elements);
-        
-        // Base cases
         int twoBack = 0;
-        int oneBack = points.get(elements.get(0));
+        int oneBack = 0;
+        int n = points.size();
         
-        for (int i = 1; i < elements.size(); i++) {
-            int currentElement = elements.get(i);
-            int temp = oneBack;
-            if (currentElement == elements.get(i - 1) + 1) {
-                // The 2 elements are adjacent, cannot take both - apply normal recurrence
-                oneBack = Math.max(oneBack, twoBack + points.get(currentElement));
-            } else {
-                // Otherwise, we don't need to worry about adjacent deletions
-                oneBack += points.get(currentElement);
+        if (maxNumber < n + n * Math.log(n) / Math.log(2)) {
+            oneBack = points.getOrDefault(1, 0);
+            for (int num = 2; num <= maxNumber; num++) {
+                int temp = oneBack;
+                oneBack = Math.max(oneBack, twoBack + points.getOrDefault(num, 0));
+                twoBack = temp;
             }
+        } else {
+            List<Integer> elements = new ArrayList<Integer>(points.keySet());
+            Collections.sort(elements);
+            oneBack = points.get(elements.get(0));
+        
+            for (int i = 1; i < elements.size(); i++) {
+                int currentElement = elements.get(i);
+                int temp = oneBack;
+                if (currentElement == elements.get(i - 1) + 1) {
+                    oneBack = Math.max(oneBack, twoBack + points.get(currentElement));
+                } else {
+                    oneBack += points.get(currentElement);
+                }
 
-            twoBack = temp;
+                twoBack = temp;
+            }
         }
         
         return oneBack;
