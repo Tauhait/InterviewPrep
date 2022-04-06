@@ -1,1 +1,1 @@
-​
+In the previous three approaches, we found the maximum element in nums, and iterated from 0 to maxNumber. The problem with this idea is that in some test cases, there could be large gaps between elements that we will waste time iterating over. In all three approaches, our time complexity was O(N+k), or O(nums.length+max(nums)). This is very inefficient for a case such as nums = [1, 2, 3, 10000].
