@@ -1,30 +1,36 @@
 class Solution {
-    private Map<Integer, Integer> freqMap = new HashMap<Integer, Integer>();
-    private Map<Integer, Integer> memo = new HashMap<Integer, Integer>();
-    private int[] nums;
-    private int max;
-    public int deleteAndEarn(int[] nums) {
-        this.nums = nums;
-        Arrays.sort(this.nums);
-        for(int n : this.nums){
-            freqMap.put(n, freqMap.getOrDefault(n, 0) + 1);
-        }
-        return dp(0);
-    }
-    private int dp(int i){
-        if(i >= nums.length){
+    private HashMap<Integer, Integer> points = new HashMap<>();
+    private HashMap<Integer, Integer> cache = new HashMap<>();
+    
+    private int maxPoints(int num) {
+        // Check for base cases
+        if (num == 0) {
             return 0;
-        }        
-        if(!memo.containsKey(i)){
-            Integer val = freqMap.get(nums[i]) * nums[i];
-            Integer freqValPlus1 = freqMap.get(nums[i] + 1);
-            if(freqValPlus1 != null){
-                memo.put(i, Math.max(val + dp(i + freqMap.get(nums[i]) + freqValPlus1), 
-                                                                    dp(i + freqMap.get(nums[i]))));
-            }else {
-                memo.put(i, val + dp(i + freqMap.get(nums[i])));
-            }            
         }
-        return memo.get(i);
+        
+        if (num == 1) {
+            return points.getOrDefault(1, 0);
+        }
+        
+        if (cache.containsKey(num)) {
+            return cache.get(num);
+        }
+        
+        // Apply recurrence relation
+        int gain = points.getOrDefault(num, 0);
+        cache.put(num, Math.max(maxPoints(num - 1), maxPoints(num - 2) + gain));
+        return cache.get(num);
+    }
+    
+    public int deleteAndEarn(int[] nums) {
+        int maxNumber = 0;
+        
+        // Precompute how many points we gain from taking an element
+        for (int num : nums) {
+            points.put(num, points.getOrDefault(num, 0) + num);
+            maxNumber = Math.max(maxNumber, num);
+        }
+        
+        return maxPoints(maxNumber);
     }
 }
