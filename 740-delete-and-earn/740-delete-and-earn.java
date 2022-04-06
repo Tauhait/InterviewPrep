@@ -1,7 +1,7 @@
 class Solution {
     public int deleteAndEarn(int[] nums) {
-        HashMap<Integer, Integer> points = new HashMap<>();
         int maxNumber = 0;
+        HashMap<Integer, Integer> points = new HashMap<>();
         
         // Precompute how many points we gain from taking an element
         for (int num : nums) {
@@ -9,16 +9,16 @@ class Solution {
             maxNumber = Math.max(maxNumber, num);
         }
         
-        // Declare our array along with base cases
-        int[] maxPoints = new int[maxNumber + 1];
-        maxPoints[1] = points.getOrDefault(1, 0);
+        // Base cases
+        int twoBack = 0;
+        int oneBack = points.getOrDefault(1, 0);
         
-        for (int num = 2; num < maxPoints.length; num++) {
-            // Apply recurrence relation
-            int gain = points.getOrDefault(num, 0);
-            maxPoints[num] = Math.max(maxPoints[num - 1], maxPoints[num - 2] + gain);
+        for (int num = 2; num <= maxNumber; num++) {
+            int temp = oneBack;
+            oneBack = Math.max(oneBack, twoBack + points.getOrDefault(num, 0));
+            twoBack = temp;
         }
         
-        return maxPoints[maxNumber];
+        return oneBack;
     }
 }
