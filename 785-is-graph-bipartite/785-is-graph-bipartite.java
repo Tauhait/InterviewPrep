@@ -13,14 +13,14 @@ class Solution {
                 uf.union(graph[i][0], edge);
             }
         }
-        for(int g : uf.getGroup()){
-            System.out.print(g + " ");
-        }
-        System.out.println();
-        System.out.println();
-        for(int r : uf.getRank()){
-            System.out.print(r + " ");
-        }
+        // for(int g : uf.getGroup()){
+        //     System.out.print(g + " ");
+        // }
+        // System.out.println();
+        // System.out.println();
+        // for(int r : uf.getRank()){
+        //     System.out.print(r + " ");
+        // }
         return true;
     }
 }
