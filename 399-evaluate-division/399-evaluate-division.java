@@ -1,67 +1,69 @@
 class Solution {
-    Map<String, Pair<String, Double>> gidWeightMap = new HashMap<String, Pair<String, Double>>();
-    
-    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
-        int len = equations.size();  
-        
-        for(int i = 0; i < len; i++){
+    public double[] calcEquation(List<List<String>> equations, double[] values,
+            List<List<String>> queries) {
+
+        HashMap<String, HashMap<String, Double>> graph = new HashMap<>();
+
+        // Step 1). build the graph from the equations
+        for (int i = 0; i < equations.size(); i++) {
             List<String> equation = equations.get(i);
             String dividend = equation.get(0), divisor = equation.get(1);
-            double quotient = values[i]; 
-            
-            union(dividend, divisor, quotient);
+            double quotient = values[i];
+
+            if (!graph.containsKey(dividend))
+                graph.put(dividend, new HashMap<String, Double>());
+            if (!graph.containsKey(divisor))
+                graph.put(divisor, new HashMap<String, Double>());
+
+            graph.get(dividend).put(divisor, quotient);
+            graph.get(divisor).put(dividend, 1 / quotient);
         }
-        
+
+        // Step 2). Evaluate each query via bactracking (DFS)
+        // by verifying if there exists a path from dividend to divisor
         double[] results = new double[queries.size()];
-        for(int i = 0; i < queries.size(); i++){
+        for (int i = 0; i < queries.size(); i++) {
             List<String> query = queries.get(i);
             String dividend = query.get(0), divisor = query.get(1);
-            if(!gidWeightMap.containsKey(dividend) || !gidWeightMap.containsKey(divisor)){
+
+            if (!graph.containsKey(dividend) || !graph.containsKey(divisor))
                 results[i] = -1.0;
-            }else {
-                Pair<String, Double> dividendEntry = find(dividend);
-                Pair<String, Double> divisorEntry = find(divisor);
-                
-                String dividendGid = dividendEntry.getKey();
-                String divisorGid = divisorEntry.getKey();
-                
-                Double dividendWeight = dividendEntry.getValue();
-                Double divisorWeight = divisorEntry.getValue();
-                
-                if(!dividendGid.equals(divisorGid)){
-                    results[i] = -1.0;
-                }else {
-                    results[i] = dividendWeight / divisorWeight;
-                }
+            else if (dividend == divisor)
+                results[i] = 1.0;
+            else {
+                HashSet<String> visited = new HashSet<>();
+                results[i] = backtrackEvaluate(graph, dividend, divisor, 1, visited);
             }
         }
+
         return results;
     }
-    private Pair<String, Double> find(String nodeId){
-        if(!gidWeightMap.containsKey(nodeId)){
-            gidWeightMap.put(nodeId, new Pair<String, Double>(nodeId, 1.0));
+
+    private double backtrackEvaluate(HashMap<String, HashMap<String, Double>> graph, 
+                                     String currNode, String targetNode, 
+                                     double accProduct, Set<String> visited) {
+
+        // mark the visit
+        visited.add(currNode);
+        double ret = -1.0;
+
+        Map<String, Double> neighbors = graph.get(currNode);
+        if (neighbors.containsKey(targetNode))
+            ret = accProduct * neighbors.get(targetNode);
+        else {
+            for (Map.Entry<String, Double> pair : neighbors.entrySet()) {
+                String nextNode = pair.getKey();
+                if (visited.contains(nextNode))
+                    continue;
+                ret = backtrackEvaluate(graph, nextNode, targetNode,
+                        accProduct * pair.getValue(), visited);
+                if (ret != -1.0)
+                    break;
+            }
         }
-        Pair<String, Double> entry = gidWeightMap.get(nodeId);
-        
-        if(!entry.getKey().equals(nodeId)){
-            Pair<String, Double> newEntry = find(entry.getKey());
-            gidWeightMap.put(nodeId, 
-                             new Pair<String, Double>(newEntry.getKey(), entry.getValue() * newEntry.getValue()));
-        }
-        return gidWeightMap.get(nodeId);
-    }
-    private void union(String dividend, String divisor, Double value){
-        Pair<String, Double> dividendEntry = find(dividend);
-        Pair<String, Double> divisorEntry = find(divisor);
-                
-        String dividendGid = dividendEntry.getKey();
-        String divisorGid = divisorEntry.getKey();
-                
-        Double dividendWeight = dividendEntry.getValue();
-        Double divisorWeight = divisorEntry.getValue();
-        if(!dividendGid.equals(divisorGid)){
-            gidWeightMap.put(dividendGid, 
-                             new Pair<String, Double>(divisorGid, divisorWeight * value / dividendWeight));
-        }
+
+        // unmark the visit, for the next backtracking
+        visited.remove(currNode);
+        return ret;
     }
 }
