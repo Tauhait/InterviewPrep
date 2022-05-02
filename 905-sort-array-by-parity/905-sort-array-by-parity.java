@@ -1,15 +1,11 @@
 class Solution {
     public int[] sortArrayByParity(int[] nums) {
-        int evenPointer = -1;
-        int oddPointer = nums.length;
-        int[] result = new int[nums.length];
-        for(int i = 0; i < nums.length; i++){
-            if(nums[i] % 2 == 0){
-                result[++evenPointer] = nums[i];
-            }else {
-                result[--oddPointer] = nums[i];
+        for (int i = 0, j = 0; j < nums.length; j++)
+            if (nums[j] % 2 == 0) {
+                int tmp = nums[i];
+                nums[i++] = nums[j];
+                nums[j] = tmp;;
             }
-        }
-        return result;
+        return nums;
     }
 }
