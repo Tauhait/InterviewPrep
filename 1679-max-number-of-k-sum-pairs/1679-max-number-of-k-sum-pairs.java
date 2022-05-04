@@ -1,24 +1,19 @@
 class Solution {
     public int maxOperations(int[] nums, int k) {
-        Map<Integer, Integer> freqMap = new HashMap<Integer, Integer>();
-        for(int num : nums){
-            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
-        }
-        int result = 0;
-        for(int num : nums){
-            int diff = k - num;
-            if(diff == num && freqMap.get(diff) > 1){                    
-                result++;
-                freqMap.put(diff, freqMap.get(diff) - 2);
-            }else if(diff != num && freqMap.containsKey(diff) && 
-                     freqMap.get(diff) > 0 && freqMap.get(num) > 0){
-                result++;
-                freqMap.put(diff, freqMap.get(diff) - 1);
-                freqMap.put(num, freqMap.get(num) - 1);
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int current = nums[i];
+            int complement = k - current;
+            if (map.getOrDefault(complement, 0) > 0) {
+                // remove complement from the map
+                map.put(complement, map.get(complement) - 1);
+                count++;
+            } else {
+                 // add current element in the map
+                map.put(current, map.getOrDefault(current, 0) + 1);
             }
-            // System.out.println(result + " " + diff + " " + num + " " + 
-            //                    freqMap.get(diff) + " " + freqMap.get(num));
         }
-        return result;
+        return count;
     }
 }
