@@ -1,27 +1,26 @@
 class MyStack {
-    private List<Integer> q;
+    private LinkedList<Integer> q;
     public MyStack() {
         q = new LinkedList();
     }
     
+    // Push element x onto stack.
     public void push(int x) {
         q.add(x);
+        int sz = q.size();
+        //we can invert the order of queue elements when pushing a new element.
+        while (sz > 1) {
+            q.add(q.remove());
+            sz--;
+        }
     }
     
     public int pop() {
-        if(!q.isEmpty()){
-            int popElem = top();
-            q.remove(q.size() - 1);
-            return popElem;
-        }
-        return -1;
+        return q.remove();
     }
     
     public int top() {
-        if(!q.isEmpty()){
-            return q.get(q.size() - 1);
-        }
-        return -1;
+        return q.peek();
     }
     
     public boolean empty() {
