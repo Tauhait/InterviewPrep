@@ -3,6 +3,7 @@ class Solution {
     // we are only interested in the number of ways the board can be completely filled. 
     // Whenever you are not sure how to approach a problem, 
     // it is a good idea to draw out the first couple of scenarios.
+    //https://leetcode.com/problems/domino-and-tromino-tiling/discuss/1600275/Java-%2B-DP-%2B-Detailed-Explanation-%2B-With-diagrams
     
     private int MOD = 1_000_000_007;
     Map<Integer, Long> f_cache = new HashMap();
