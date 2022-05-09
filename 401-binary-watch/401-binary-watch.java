@@ -15,7 +15,6 @@ class Solution {
 
             for(Integer hour : hours){
                 for(Integer minute : minutes){
-                    //String temp = String.format("%d:%02d", hour, minute);
                     result.add(String.format("%d:%02d", hour, minute));
                 }
             }
