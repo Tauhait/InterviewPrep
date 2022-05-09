@@ -20,3 +20,7 @@ Not counting space used for the output, the extra space we use relative to input
 ​
 As the hash map does not grow as the inputs grows, it occupies O(1)O(1) space.
 ​
+​
+This problem is not 'strictly' backtracking in the sense of it. But the re use of the same array and adding and removing from the array around the recursive calls is the same principle on which most backtracking problems and algorithms depend.
+​
+Problem needs to generate all possible combinations but if we use backtracking method then we save on space complexity whereas in brute force it will be O(n^4) in the worst case.
