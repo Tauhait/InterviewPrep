@@ -1,11 +1,9 @@
 class Solution {
     private List<List<Integer>> ans;
-    // private Set<String> combinationSet;
     private int k;
     private int n;
     public List<List<Integer>> combinationSum3(int k, int n) {
         ans = new ArrayList();
-        // combinationSet = new HashSet();
         this.k = k;
         this.n = n;
         boolean[] isUsed = new boolean[10];
