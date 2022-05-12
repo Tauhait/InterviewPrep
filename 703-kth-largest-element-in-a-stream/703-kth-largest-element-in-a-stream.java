@@ -22,8 +22,10 @@ class KthLargest {
             stream.add(val);
         }
         else if(val > stream.peek()){
-            stream.add(val);
+            // stream.add(val);
+            
             stream.poll();
+            stream.add(val);
         }
         else {
             //skip
