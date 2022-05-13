@@ -1,31 +1,25 @@
 class Solution {
+    
     public int lastStoneWeight(int[] stones) {
         
-        if(stones.length == 1){
-            return stones[0];
+        // Insert all the stones into a Max-Heap.
+        PriorityQueue<Integer> heap = new PriorityQueue<>(Comparator.reverseOrder());
+        for (int stone: stones) {
+            heap.add(stone);
         }
-        if(stones.length == 2){
-            int wStone1 = stones[0];
-            int wStone2 = stones[1];
-            return wStone1 > wStone2 ? wStone1-wStone2 : wStone2-wStone1;
-        }
-            
-        PriorityQueue<Integer> heap = new PriorityQueue<>(Collections.reverseOrder());
-        int len = stones.length;
-        for(int i=0; i < len; i++){
-            heap.offer(stones[i]);
-        }
-        while(heap.size() > 1){
-            int stone1 = heap.poll();
-            int stone2 = heap.poll();
-            int smashVal = stone1 - stone2;
-            if((stone1 - stone2) > 0){
-                heap.offer(smashVal);
+
+        // While there is more than one stone left, we need to remove the two largest
+        // and smash them together. If there is a resulting stone, we need to put into
+        // the heap.
+        while (heap.size() > 1) {
+            int stone1 = heap.remove();
+            int stone2 = heap.remove();
+            if (stone1 != stone2) {
+                heap.add(stone1 - stone2);
             }
         }
-        if(heap.size() == 1)
-            return heap.poll();
-        else
-            return 0;
+
+        // Check whether or not there is a stone left to return.
+        return heap.isEmpty() ? 0 : heap.remove();
     }
 }
