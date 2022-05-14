@@ -20,7 +20,7 @@ class Solution {
         //to check if a node is already visited,
         //also stores shortest distance info from node k to every other node
         Map<Integer, Integer> dist = new HashMap(); 
-        
+        int total_time = 0;
         
         while(!heap.isEmpty()){
             int[] info = heap.poll();
@@ -33,6 +33,8 @@ class Solution {
             }else {
                 dist.put(thisNode, dist_fromK);
             }
+            total_time = dist_fromK;
+            n--;
             //Check for neighbors
             if(graph.containsKey(thisNode)){
                 for(int[] edge : graph.get(thisNode)){
@@ -44,14 +46,6 @@ class Solution {
                 }
             }
         }
-        
-        if(dist.size() != n){
-            return -1;
-        }
-        int maxDistance = 0;
-        for(int distance : dist.values()){
-            maxDistance = Math.max(maxDistance, distance);
-        }
-        return maxDistance;
+        return n == 0 ? total_time : -1;
     }
 }
