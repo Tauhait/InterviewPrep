@@ -14,7 +14,7 @@ class Solution {
             graph.get(edge[0]).add(new int[]{edge[1], edge[2]});
         }
         
-        PriorityQueue<int[]> heap = new PriorityQueue<int[]>((dist1, dist2) -> dist1[0] - dist2[0]);
+        PriorityQueue<int[]> heap = new PriorityQueue<int[]>((dist1, dist2) -> Integer.compare(dist1[0], dist2[0]));
         heap.offer(new int[]{0, k});//{distance, node number}
         
         //to check if a node is already visited,
