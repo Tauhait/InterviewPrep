@@ -1,17 +1,26 @@
 class Solution {
+
+    private int binarySearch(int[] row) {
+        int low = 0;
+        int high = row.length;
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (row[mid] == 1) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+        return low;
+    }
+
     public int[] kWeakestRows(int[][] mat, int k) {
 
-        int m = mat.length;
-        int n = mat[0].length;
-
-        // Calculate all the strengths and put them into a HashMap.
+        // Calculate all the strengths using Binary Search and
+        // put them into a TreeMap.
         Map<Integer, List<Integer>> strengths = new HashMap<>();
-        for (int i = 0; i < m; i++) {
-            int strength = 0;
-            for (int j = 0; j < n; j++) {
-                if (mat[i][j] == 0) break;
-                strength++;
-            }
+        for (int i = 0; i < mat.length; i++) {
+            int strength = binarySearch(mat[i]);
             if (!strengths.containsKey(strength)) {
                 strengths.put(strength, new ArrayList<>());
             }
@@ -23,7 +32,6 @@ class Solution {
         List<Integer> sortedStrengths = new ArrayList<>(strengths.keySet());
         Collections.sort(sortedStrengths);
 
-        // Pull out indexes for the k smallest strengths.
         int[] indexes = new int[k];
         int i = 0;
         for (int key : sortedStrengths) {
@@ -34,6 +42,7 @@ class Solution {
             }
             if (i == k) break;
         }
+
         return indexes;
     }
 }
