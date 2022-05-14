@@ -15,32 +15,30 @@ class Solution {
     }
 
     public int[] kWeakestRows(int[][] mat, int k) {
+        int m = mat.length;
+        int n = mat[0].length;
 
-        // Calculate all the strengths using Binary Search and
-        // put them into a TreeMap.
-        Map<Integer, List<Integer>> strengths = new HashMap<>();
-        for (int i = 0; i < mat.length; i++) {
+        // Create a Priority Queue that measures firstly on strength and then indexes.
+        PriorityQueue<int[]> pq = new  PriorityQueue<>((a, b) -> {
+            if (a[0] == b[0]) return b[1] - a[1];
+            else return b[0] - a[0];
+        });
+
+        // Add strength/index pairs to the pq. Whenever length > k, remove the largest.
+        for (int i = 0; i < m; i++) {
             int strength = binarySearch(mat[i]);
-            if (!strengths.containsKey(strength)) {
-                strengths.put(strength, new ArrayList<>());
+            int[] entry = new int[]{strength, i};
+            pq.add(entry);
+            if (pq.size() > k) {
+                pq.poll();
             }
-            strengths.get(strength).add(i);
         }
 
-        // Note that if we'd used a TreeMap instead of HashMap, the keys would
-        // have already been sorted.
-        List<Integer> sortedStrengths = new ArrayList<>(strengths.keySet());
-        Collections.sort(sortedStrengths);
-
+        // Pull the indexes out of the priority queue.
         int[] indexes = new int[k];
-        int i = 0;
-        for (int key : sortedStrengths) {
-            for (int index : strengths.get(key)) {
-                indexes[i] = index;
-                i++;
-                if (i == k) break;
-            }
-            if (i == k) break;
+        for (int i = k - 1; i >= 0; i--) {
+            int[] pair = pq.poll();
+            indexes[i] = pair[1];
         }
 
         return indexes;
