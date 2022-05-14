@@ -1,34 +1,39 @@
 class Solution {
     public int[] kWeakestRows(int[][] mat, int k) {
+
         int m = mat.length;
         int n = mat[0].length;
 
-        // Calculate all the strengths and put strength/ index pairs into an array.
-        int[][] pairs = new int[m][2];
-
+        // Calculate all the strengths and put them into a HashMap.
+        Map<Integer, List<Integer>> strengths = new HashMap<>();
         for (int i = 0; i < m; i++) {
             int strength = 0;
             for (int j = 0; j < n; j++) {
                 if (mat[i][j] == 0) break;
                 strength++;
             }
-            pairs[i][0] = strength;
-            pairs[i][1] = i;
+            if (!strengths.containsKey(strength)) {
+                strengths.put(strength, new ArrayList<>());
+            }
+            strengths.get(strength).add(i);
         }
 
-        /* Sort the pairs, firstly on strength and secondly on index. We'll need
-         * to implement a comparator to do this. */
-        Arrays.sort(pairs, (a, b) -> {
-            if (a[0] == b[0]) return a[1] - b[1];
-            else return a[0] - b[0];
-        });
+        // Note that if we'd used a TreeMap instead of HashMap, the keys would
+        // have already been sorted.
+        List<Integer> sortedStrengths = new ArrayList<>(strengths.keySet());
+        Collections.sort(sortedStrengths);
 
-        // Pull out the first k indexes of the sorted array to return.
+        // Pull out indexes for the k smallest strengths.
         int[] indexes = new int[k];
-        for (int i = 0; i < k; i++) {
-            indexes[i] = pairs[i][1];
+        int i = 0;
+        for (int key : sortedStrengths) {
+            for (int index : strengths.get(key)) {
+                indexes[i] = index;
+                i++;
+                if (i == k) break;
+            }
+            if (i == k) break;
         }
         return indexes;
-
     }
 }
