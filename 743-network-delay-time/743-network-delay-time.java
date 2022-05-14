@@ -1,7 +1,7 @@
 class Solution {
     public int networkDelayTime(int[][] times, int n, int k) {
         /*
-        1. Make Graph
+        1. Make Graph using hashmap and list 
         2. Make a Dist Map
         3. Build a PQ to select the next node to hop on
         4. Calc dist using dist map
@@ -15,9 +15,12 @@ class Solution {
         }
         
         PriorityQueue<int[]> heap = new PriorityQueue<int[]>((dist1, dist2) -> dist1[0] - dist2[0]);
-        heap.offer(new int[]{0, k});
+        heap.offer(new int[]{0, k});//{distance, node number}
         
-        Map<Integer, Integer> dist = new HashMap();
+        //to check if a node is already visited,
+        //also stores shortest distance info from node k to every other node
+        Map<Integer, Integer> dist = new HashMap(); 
+        
         
         while(!heap.isEmpty()){
             int[] info = heap.poll();
