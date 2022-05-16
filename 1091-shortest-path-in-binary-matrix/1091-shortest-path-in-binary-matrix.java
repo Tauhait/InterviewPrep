@@ -14,6 +14,12 @@ class Solution {
             int[] cell = queue.poll();
             int distance = grid[cell[0]][cell[1]];
             if(cell[0] == rlen && cell[1] == clen){
+                // for(int i = 0; i <= rlen; i++){
+                //     for(int j = 0; j <= clen; j++){
+                //         System.out.print(grid[i][j] + "\t");
+                //     }
+                //     System.out.println();
+                // }
                 return distance;
             }
             for(int[] neighbors : getNeighbors(grid, cell, rlen, clen)){
