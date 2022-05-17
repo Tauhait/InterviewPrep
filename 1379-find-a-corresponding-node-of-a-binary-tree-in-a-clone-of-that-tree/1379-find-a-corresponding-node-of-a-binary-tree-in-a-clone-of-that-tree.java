@@ -13,7 +13,7 @@ class Solution {
         if(cloned == null){
             return null;
         }
-        if(target.val == original.val && cloned.val == original.val){
+        if(target == original){
             return cloned;
         }
         TreeNode ref =  getTargetCopy(original.left, cloned.left, target);
