@@ -2,7 +2,7 @@ class Solution {
     
     private Map<Integer, List<Integer>> graph;
     private Map<Integer, Integer> rank;
-    private Map<Pair<Integer, Integer>, Boolean> connDict;
+    private Set<String> connSet;
     
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
        
@@ -10,8 +10,15 @@ class Solution {
         this.dfs(0, 0);
         
         List<List<Integer>> result = new ArrayList<List<Integer>>();
-        for (Pair<Integer, Integer> criticalConnection : this.connDict.keySet()) {
-            result.add(new ArrayList<Integer>(Arrays.asList(criticalConnection.getKey(), criticalConnection.getValue())));
+        
+        Iterator<String> criticalConnection = this.connSet.iterator();
+        while (criticalConnection.hasNext()) {
+            String[] split = criticalConnection.next().split(",");
+            result.add(
+                new ArrayList<Integer>(
+                    Arrays.asList(Integer.valueOf(split[0]), Integer.valueOf(split[1]))
+                )
+            );
         }
         
         return result;
@@ -44,7 +51,7 @@ class Solution {
             // Step 1, check if this edge needs to be discarded.
             if (recursiveRank <= discoveryRank) {
                 int sortedU = Math.min(node, neighbor), sortedV = Math.max(node, neighbor);
-                this.connDict.remove(new Pair<Integer, Integer>(sortedU, sortedV));
+                this.connSet.remove(sortedU + "," + sortedV);
             }
             
             // Step 2, update the minRank if needed.
@@ -58,7 +65,7 @@ class Solution {
         
         this.graph = new HashMap<Integer, List<Integer>>();
         this.rank = new HashMap<Integer, Integer>();
-        this.connDict = new HashMap<Pair<Integer, Integer>, Boolean>();
+        this.connSet = new HashSet<String>();
         
         // Default rank for unvisited nodes is "null"
         for (int i = 0; i < n; i++) {
@@ -74,7 +81,7 @@ class Solution {
             this.graph.get(v).add(u);
             
             int sortedU = Math.min(u, v), sortedV = Math.max(u, v);
-            connDict.put(new Pair<Integer, Integer>(sortedU, sortedV), true);
+            connSet.add(sortedU + "," +  sortedV);
         }
     }
 }
