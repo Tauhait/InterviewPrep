@@ -5,7 +5,7 @@ class MedianFinder {
         myList = new ArrayList<Integer>();
     }
     //to find the insertion position of new element
-    private int binarySearch(int val){
+    private int binarySearch(int val){//O(log n)
         int low = 0;//set low to starting index always for BS
         int high = myList.size() - 1;//set high to end index always for BS
         
@@ -20,7 +20,7 @@ class MedianFinder {
         return low;
     }
     
-    public void addNum(int num) {
+    public void addNum(int num) {//O(n) : inserting into linear DS 
         if(myList.size() == 0){
             myList.add(num);
         }else {
