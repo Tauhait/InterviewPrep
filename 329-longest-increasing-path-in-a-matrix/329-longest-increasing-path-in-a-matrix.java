@@ -1,25 +1,39 @@
 class Solution {
     private static final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
     private int m, n;
-
+    private int[][] memo;
+    private int[][] matrix;
+    
     public int longestIncreasingPath(int[][] matrix) {
-        if (matrix.length == 0) return 0;
-        m = matrix.length; n = matrix[0].length;
-        int[][] cache = new int[m][n];
+        m = matrix.length; 
+        n = matrix[0].length;
+        this.matrix = matrix;
+        memo = new int[m][n];
+        
         int ans = 0;
-        for (int i = 0; i < m; ++i)
-            for (int j = 0; j < n; ++j)
-                ans = Math.max(ans, dfs(matrix, i, j, cache));
-        return ans;
-    }
-
-    private int dfs(int[][] matrix, int i, int j, int[][] cache) {
-        if (cache[i][j] != 0) return cache[i][j];
-        for (int[] d : dirs) {
-            int x = i + d[0], y = j + d[1];
-            if (0 <= x && x < m && 0 <= y && y < n && matrix[x][y] > matrix[i][j])
-                cache[i][j] = Math.max(cache[i][j], dfs(matrix, x, y, cache));
+        
+        for (int i = 0; i < m; ++i){
+            for (int j = 0; j < n; ++j){
+                ans = Math.max(ans, DFS(i, j));
+            }
         }
-        return ++cache[i][j];
+        
+        return ans + 1;//Add 1 to count the initial start cell in the path
+    }
+    //DFS with DP memoization technique
+    private int DFS(int i, int j) {
+        if(memo[i][j] == 0){            
+            for (int[] d : dirs) {                
+                int next_i = i + d[0], next_j = j + d[1];
+                
+                if (0 <= next_i && next_i < m && 
+                    0 <= next_j && next_j < n && 
+                    matrix[next_i][next_j] > matrix[i][j]){
+                    
+                    memo[i][j] = Math.max(memo[i][j], 1 + DFS(next_i, next_j));
+                }
+            }
+        }
+        return memo[i][j];
     }
 }
