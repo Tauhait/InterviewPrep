@@ -40,12 +40,6 @@ class Solution {
         }
     }
     private int dp(int i, int j){
-        // if(i < 0 || j < 0){
-        //     return 0;
-        // }
-        // if(i == 0 && j == 0){
-        //     return obstacles[i][j] == 1 ? 0 : 1;
-        // }
         if(memo[i][j] == -1){
             int down = 0, right = 0;
             if(i - 1 >= 0 && obstacles[i - 1][j] != 1){
