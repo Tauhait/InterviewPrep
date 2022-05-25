@@ -9,7 +9,7 @@ public class Solution {
         if(envelopes.length < 2) return envelopes.length;
         
         Arrays.sort(envelopes, new EnvelopeComparator());
-        int[] dp = new int[envelopes.length];
+        int[] output = new int[envelopes.length];
         int size = 0;
         
         for(int[] envelope: envelopes) {
@@ -17,13 +17,19 @@ public class Solution {
             int left = 0, right = size, middle = 0;     // right = size
             while(left < right) {
                 middle = left + (right - left) / 2;
-                if(dp[middle] < envelope[1]) left = middle + 1;
-                else right = middle;
+                if(output[middle] < envelope[1]){
+                    left = middle + 1;
+                } 
+                else {
+                    right = middle;
+                }
             }
             
             // left is the right position to 'replace' in dp array
-            dp[left] = envelope[1];
-            if(left == size) size++;
+            output[left] = envelope[1];
+            if(left == size) {
+                size++;
+            }
         }
         return size;
     }
