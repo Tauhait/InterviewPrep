@@ -9,7 +9,6 @@ class WordDictionary {
     }
     
     TrieNode root;
-    boolean isPresent;
     
     public WordDictionary() {
         root = new TrieNode();
