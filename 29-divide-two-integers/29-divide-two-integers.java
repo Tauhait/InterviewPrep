@@ -20,34 +20,32 @@ class Solution {
             divisor = -divisor;
         }
 
-        ArrayList<Integer> doubles = new ArrayList<>();
-        ArrayList<Integer> powersOfTwo = new ArrayList<>();
-
-        /* Nothing too exciting here, we're just making a list of doubles of 1 and
-         * the divisor. This is pretty much the same as Approach 2, except we're
-         * actually storing the values this time. */
-        int powerOfTwo = -1;
-        while (divisor >= dividend) {
-            doubles.add(divisor);
-            powersOfTwo.add(powerOfTwo);
-            // Prevent needless overflows from occurring...
-            if (divisor < HALF_INT_MIN) {
-                break;
-            }
-            divisor += divisor;
-            powerOfTwo += powerOfTwo;
+        /* In the first loop, we simply find the largest double of divisor
+         * that fits into the dividend.
+         * The >= is because we're working in negatives. In essence, that
+         * piece of code is checking that we're still nearer to 0 than we
+         * are to INT_MIN. */
+        int highestDouble = divisor;
+        int highestPowerOfTwo = -1;
+        while (highestDouble >= HALF_INT_MIN && highestDouble + highestDouble >= dividend) {
+            highestPowerOfTwo += highestPowerOfTwo;
+            highestDouble += highestDouble;
         }
 
+        /* In the second loop, we work out which powers of two fit in, by
+         * halving highestDouble and highestPowerOfTwo repeatedly.
+         * We can do this using bit shifting so that we don't break the
+         * rules of the question :-) */
         int quotient = 0;
-        /* Go from largest double to smallest, checking if the current double fits.
-         * into the remainder of the dividend. */
-        for (int i = doubles.size() - 1; i >= 0; i--) {
-            if (doubles.get(i) >= dividend) {
-                // If it does fit, add the current powerOfTwo to the quotient.
-                quotient += powersOfTwo.get(i);
-                // Update dividend to take into account the bit we've now removed.
-                dividend -= doubles.get(i);
+        while (divisor >= dividend) {
+            if (highestDouble >= dividend) {
+                quotient += highestPowerOfTwo;
+                dividend -= highestDouble;
             }
+            /* We know that these are always even, so no need to worry about the
+             * annoying "bit-shift-odd-negative-number" case. */
+            highestPowerOfTwo >>= 1;
+            highestDouble >>= 1;
         }
 
         /* If there was originally one negative sign, then
