@@ -1,14 +1,17 @@
-class Solution {//Newton's Method
+class Solution {
   public int mySqrt(int x) {
     if (x < 2) return x;
 
-    double x0 = x;
-    double x1 = (x0 + x / x0) / 2.0;
-    while (Math.abs(x0 - x1) >= 1) {
-      x0 = x1;
-      x1 = (x0 + x / x0) / 2.0;
+    long num;
+    int pivot, left = 2, right = x / 2;
+    while (left <= right) {
+      pivot = left + (right - left) / 2;
+      num = (long)pivot * pivot;
+      if (num > x) right = pivot - 1;
+      else if (num < x) left = pivot + 1;
+      else return pivot;
     }
 
-    return (int)x1;
+    return right;
   }
 }
