@@ -1,17 +1,14 @@
 class Solution {
-  public int mySqrt(int x) {
-    if (x < 2) return x;
-
-    long num;
-    int pivot, left = 2, right = x / 2;
-    while (left <= right) {
-      pivot = left + (right - left) / 2;
-      num = (long)pivot * pivot;
-      if (num > x) right = pivot - 1;
-      else if (num < x) left = pivot + 1;
-      else return pivot;
+    public int mySqrt(int x) {
+        if(x <= 1) return x;
+        int low = 0, high = x >> 1;
+        while(low <= high){
+            int mid = (low + high) >>> 1;
+            long sq = (long) mid * mid;
+            if(sq == x) return mid;
+            else if(sq < x) low = mid + 1;
+            else high = mid - 1;
+        }
+        return high;
     }
-
-    return right;
-  }
 }
