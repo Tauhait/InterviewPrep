@@ -1,37 +1,55 @@
 class Solution {
     public int[] searchRange(int[] nums, int target) {
-        int[] result = new int[] {-1, -1};
         
-        if(nums == null || nums.length == 0) return result;
+        int firstOccurrence = this.findBound(nums, target, true);
         
-        int index = binarySearch(nums, 0, nums.length - 1, target);
-        if(index == -1) return result;
-        
-        int leftBoundary = index, rightBoundary = index;
-        int boundary = -1;
-        do {
-            boundary = binarySearch(nums, 0, leftBoundary - 1, target);
-            leftBoundary = boundary == -1 ? leftBoundary : boundary;
-        } while(boundary != -1);
-        
-        boundary = -1;
-        do {
-            boundary = binarySearch(nums, rightBoundary + 1, nums.length - 1, target);
-            rightBoundary = boundary == -1 ? rightBoundary : boundary;
-        } while(boundary != -1);
-        
-        result[0] = leftBoundary;
-        result[1] = rightBoundary;
-        return result;
-    }
-    private int binarySearch(int[] nums, int left, int right, int target){       
-         while(left <= right){
-            int mid = left + (right - left)/2;
-            // System.out.println(left + "," + mid + "," + right);
-            if(nums[mid] < target) left = mid + 1;
-            else if(nums[mid] > target) right = mid - 1;
-            else return mid;
+        if (firstOccurrence == -1) {
+            return new int[]{-1, -1};
         }
+        
+        int lastOccurrence = this.findBound(nums, target, false);
+        
+        return new int[]{firstOccurrence, lastOccurrence};
+    }
+    
+    private int findBound(int[] nums, int target, boolean isFirst) {
+        int N = nums.length;
+        int begin = 0, end = N - 1;
+        
+        while (begin <= end) {
+            
+            int mid = (begin + end) / 2;
+            
+            if (nums[mid] == target) {
+                
+                if (isFirst) {
+                    
+                    // This means we found our lower bound.
+                    if (mid == begin || nums[mid - 1] != target) {
+                        return mid;
+                    }
+                    
+                    // Search on the left side for the bound.
+                    end = mid - 1;
+                    
+                } else {
+                    
+                    // This means we found our upper bound.
+                    if (mid == end || nums[mid + 1] != target) {
+                        return mid;
+                    }
+                    
+                    // Search on the right side for the bound.
+                    begin = mid + 1;
+                }
+                
+            } else if (nums[mid] > target) {
+                end = mid - 1;
+            } else {
+                begin = mid + 1;
+            }
+        }
+        
         return -1;
     }
 }
