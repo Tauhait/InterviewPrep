@@ -1,0 +1,2 @@
+Both the Java and Python implementations require O(k)O(k) time to build the result. However, it is worth noting that if the input array were given as a list instead of an array of integers, then the Java implementation could use the ArrayList.subList() method to build the result in O(1)O(1) time. If this were the case, the Java solution would have an (extremely fast) overall time complexity of O(\log(N - k))O(log(N−k)).
+​
