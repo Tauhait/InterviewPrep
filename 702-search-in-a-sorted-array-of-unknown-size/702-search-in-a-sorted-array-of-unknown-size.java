@@ -7,26 +7,28 @@
  */
 
 class Solution {
-    public int search(ArrayReader reader, int target) {
-        int left = 0;
-        int right = getSize(reader);
-        System.out.println(right);
-        
-        while(left <= right){
-            int mid = (left + right) >>> 1;
-            int val = reader.get(mid);
-            if(val == target) return mid;
-            else if(val < target) left = mid + 1;
-            else right = mid - 1;
-        }
-        return -1;
+  public int search(ArrayReader reader, int target) {
+    if (reader.get(0) == target) return 0;
+
+    // search boundaries
+    int left = 0, right = 1;
+    while (reader.get(right) < target) {
+      left = right;
+      right <<= 1;
     }
-    private int getSize(ArrayReader reader){
-        int i = 1;
-        while(reader.get(i + 1) != Integer.MAX_VALUE){
-            if(reader.get(i) != Integer.MAX_VALUE) i <<= 1;
-            else i >>= 1;
-        }
-        return i;
+
+    // binary search
+    int pivot, num;
+    while (left <= right) {
+      pivot = left + ((right - left) >> 1);
+      num = reader.get(pivot);
+
+      if (num == target) return pivot;
+      if (num > target) right = pivot - 1;
+      else left = pivot + 1;
     }
+
+    // there is no target element
+    return -1;
+  }
 }
