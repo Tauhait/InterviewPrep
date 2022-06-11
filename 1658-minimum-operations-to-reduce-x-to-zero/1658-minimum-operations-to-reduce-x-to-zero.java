@@ -1,23 +1,15 @@
 class Solution {
     public int minOperations(int[] nums, int x) {
-        int total = 0;
-        for(int idx = 0; idx < nums.length; idx++){
-            total += nums[idx];
+        int sum = 0;
+        int left = 0, right = 0, res = Integer.MAX_VALUE;
+        for(int num : nums) sum += num;
+        while(left <= right){
+            if(sum >= x){
+                if(sum == x) res = Math.min(res, left + nums.length - right);
+                if(right < nums.length) sum -= nums[right++];
+                else break;
+            }else sum += nums[left++];
         }
-        int toFind = total - x;
-        int winLeft = 0, winRight;
-        int winSum = 0;
-        int longest = -1;
-        for(winRight = 0; winRight < nums.length; winRight++){
-            winSum += nums[winRight];
-            while(winSum > toFind && winLeft <= winRight){
-                winSum -= nums[winLeft];
-                winLeft++;
-            }
-            if(winSum == toFind){
-                longest = Math.max(longest, winRight - winLeft + 1);
-            }
-        }
-        return longest != -1 ? nums.length - longest : longest; 
+        return res == Integer.MAX_VALUE ? -1 : res;
     }
 }
