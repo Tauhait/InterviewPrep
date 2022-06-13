@@ -23,12 +23,7 @@ class Solution {
         for(int j = 0; j < m; j++){
             minPath = Math.min(minPath, dp(n-1, j));
         }
-        for(Integer[] cc : cache){
-            for(Integer c : cc){
-                System.out.print(c + "\t");
-            }
-            System.out.println();
-        }
+        
         return minPath;
     }
 }
