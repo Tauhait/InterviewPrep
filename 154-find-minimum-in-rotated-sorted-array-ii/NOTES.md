@@ -1,1 +1,1 @@
-​
+This is because you can't decide on which half of the array you could eliminate. For example [3,3.3.3,1,3] you could see that left, mid and right elements are same. Now you have to remove the duplicate from both ends until you have to find the range where the traditional binary search condition could be applied. This implies that you remove the duplicates from sorted array and do binary search on remaining elements. So the time complexity would become O(n).
