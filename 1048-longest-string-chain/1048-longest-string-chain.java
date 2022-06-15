@@ -2,30 +2,30 @@ class Solution {
     //valid ques to interviewer - is the letters in the word unique?
     private Map<String, Integer> memo;
     
-    private int recurse(String[] words, int i){
-        if(i < 0) return 1;
+    private int recurse(String[] words, int i){//words can be made class variable, i is dp index
+        if(i < 0) return 1;//if no more words left then return 1 as last word was valid
         if(memo.containsKey(words[i])) return memo.get(words[i]);
         
         String current = words[i];
         int currLen = current.length();
-        List<Integer> candidates = new ArrayList<Integer>();
-        int j = i-1;
+        List<Integer> candidates = new ArrayList<Integer>();//list of current predecessors
+        int j = i-1;//start from previous word to search predecessors
         
         for(; j >= 0; j--){
-            if(currLen - words[j].length() == 0) continue;
-            if(currLen - words[j].length() > 1) break;
-            if(isPredecessor(words[j], current)){
+            if(currLen - words[j].length() == 0) continue;//same length words skip
+            if(currLen - words[j].length() > 1) break;//diff between curr word and this word > 1
+            if(isPredecessor(words[j], current)){//diff = 1, so check if valid predecessor
                 candidates.add(j);
             }
         }
-        int count = 1;
-        for(int pred : candidates){
-            count = Math.max(count, 1 + recurse(words, pred));
+        int count = 1;//considering the current word 
+        for(int pred : candidates){//traverse all list of predecessors
+            count = Math.max(count, 1 + recurse(words, pred));//recursively call candidates
         }
         memo.put(current, count);
         return count;        
     }
-    private boolean isPredecessor(String s1, String s2){
+    private boolean isPredecessor(String s1, String s2){//O(Max(n, m)); n = s1 len, m = s2 len
         //both string differ by 1 in length, s1 < s2
         char[] s1Char = s1.toCharArray();
         char[] s2Char = s2.toCharArray();
@@ -48,7 +48,7 @@ class Solution {
     public int longestStrChain(String[] words) {
         if(words.length == 1) return 1;
         memo = new HashMap<String, Integer>();
-        Arrays.sort(words, (a, b)->(a.length() - b.length()));
+        Arrays.sort(words, (a, b)->(a.length() - b.length()));//O(n log n)
         int ans = 1;
         for(int i = words.length-1; i >= 0; i--){
             ans = Math.max(ans, recurse(words, i));
