@@ -1,1 +1,3 @@
+We don't handle duplicate node values in the algorithm below. That is left as an exercise for the reader to solve :) It's a slight variation but an important one to understand for follow-up questions in an interview.
 ​
+since we might end up encountering a skewed tree and in that case, we will just be discarding one node at a time. For a balanced binary-search tree, however, the time complexity will be O(\text{log}N)O(logN) which is what we usually find in practice.
