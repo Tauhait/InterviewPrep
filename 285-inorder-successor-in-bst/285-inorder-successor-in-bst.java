@@ -9,15 +9,12 @@
  */
 class Solution {
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {        
-        TreeNode successor = null;        
-        while (root != null) {            
-            if (p.val >= root.val) {
-                root = root.right;
-            } else {
-                successor = root;
-                root = root.left;
-            }
-        }        
-        return successor;
+        if (root == null) return null;
+
+        if (root.val <= p.val) return inorderSuccessor(root.right, p);
+        else {
+            TreeNode left = inorderSuccessor(root.left, p);
+            return (left != null) ? left : root;
+        }
     }
 }
