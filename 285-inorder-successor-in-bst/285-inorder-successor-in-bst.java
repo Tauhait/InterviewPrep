@@ -8,19 +8,16 @@
  * }
  */
 class Solution {
-    TreeNode succ = null;
-    TreeNode prev = null;
-    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-        getInorderSucc(root, p);
-        return succ;
-    }
-    private void getInorderSucc(TreeNode node, TreeNode p){
-        if(node != null){
-            getInorderSucc(node.left, p);
-            if(prev != null && succ == null) succ = node;
-            if(node.val == p.val) prev = node;
-            getInorderSucc(node.right, p);
-            
-        }
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {        
+        TreeNode successor = null;        
+        while (root != null) {            
+            if (p.val >= root.val) {
+                root = root.right;
+            } else {
+                successor = root;
+                root = root.left;
+            }
+        }        
+        return successor;
     }
 }
