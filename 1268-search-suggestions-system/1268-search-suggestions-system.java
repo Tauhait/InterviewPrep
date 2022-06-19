@@ -1,44 +1,44 @@
+class TrieNode {
+    TrieNode [] child = new TrieNode [26];
+    LinkedList<String> suggestion = new LinkedList<>();
+}
 class Solution {
-    // Equivalent code for lower_bound in Java
-    private int lower_bound(String[] products, int start, String word) {
-        int low = start, high = products.length, mid;
-        while (low < high) {
-            mid = (low + high) >>> 1;
-            if (products[mid].compareTo(word) >= 0)
-                high = mid;
-            else
-                low = mid + 1;
-        }
-        return low;
-    }
-public List<List<String>> suggestedProducts(String[] products, String searchWord) {
-    Arrays.sort(products);
-    List<List<String>> result = new ArrayList<>();
-    int start = 0, bsStart = 0, n = products.length;
-    String prefix = new String();
-        
-    for (char c : searchWord.toCharArray()) {
-        prefix += c;
+    private TrieNode root = new TrieNode();
 
-        // Get the starting index of word starting with `prefix`.
-        start = lower_bound(products, bsStart, prefix);
-
-        // Add empty vector to result.
-        result.add(new ArrayList<>());
-
-        // Add the words with the same prefix to the result.
-        // Loop runs until `i` reaches the end of input or 3 times or till the
-        // prefix is same for `products[i]` Whichever comes first.
-        for (int i = start; i < Math.min(start + 3, n); i++) {
-            if (products[i].length() < prefix.length() || 
-                !products[i].substring(0, prefix.length()).equals(prefix))
-                    break;
-                result.get(result.size() - 1).add(products[i]);
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char ch : word.toCharArray()){
+            int index = ch - 'a';
+            if (node.child[index] == null) {
+                node.child[index] = new TrieNode();
             }
+            node = node.child[index];
+            node.suggestion.offer(word);
+            if (node.suggestion.size() > 3) {
+                node.suggestion.pollLast();
+            }
+        }
+    }
 
-            // Reduce the size of elements to binary search on since we know
-            bsStart = start;
+    public List<List<String>> search(String searchWord) {
+        List<List<String>> result = new ArrayList<>();
+        TrieNode node = root;
+        for (char ch : searchWord.toCharArray()) {
+            int index = ch - 'a';
+            if (node != null) {
+                node = node.child[index];
+            }
+            result.add(node == null ? Arrays.asList() : node.suggestion);
         }
         return result;
+    }
+
+
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        Arrays.sort(products);
+        for (String product : products) {
+            insert(product);
+        }
+        return search(searchWord);
     }
 }
