@@ -37,7 +37,7 @@ public List<List<String>> suggestedProducts(String[] products, String searchWord
             }
 
             // Reduce the size of elements to binary search on since we know
-            bsStart = Math.abs(start);
+            bsStart = start;
         }
         return result;
     }
