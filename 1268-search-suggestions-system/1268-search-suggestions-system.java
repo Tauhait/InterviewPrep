@@ -1,44 +1,46 @@
-class TrieNode {
-    TrieNode [] child = new TrieNode [26];
-    LinkedList<String> suggestion = new LinkedList<>();
-}
 class Solution {
-    private TrieNode root = new TrieNode();
-
-    public void insert(String word) {
-        TrieNode node = root;
-        for (char ch : word.toCharArray()){
-            int index = ch - 'a';
-            if (node.child[index] == null) {
-                node.child[index] = new TrieNode();
-            }
-            node = node.child[index];
-            node.suggestion.offer(word);
-            if (node.suggestion.size() > 3) {
-                node.suggestion.pollLast();
-            }
+  public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+    TrieNode root = new TrieNode();
+    for (String prod : products) {
+      TrieNode curr = root;
+      for (char c : prod.toCharArray()) {
+        if (curr.children[c - 'a'] == null) {
+          curr.children[c - 'a'] = new TrieNode();
         }
+        curr = curr.children[c - 'a'];
+        curr.matchingProducts.add(prod);
+      }
     }
-
-    public List<List<String>> search(String searchWord) {
-        List<List<String>> result = new ArrayList<>();
-        TrieNode node = root;
-        for (char ch : searchWord.toCharArray()) {
-            int index = ch - 'a';
-            if (node != null) {
-                node = node.child[index];
-            }
-            result.add(node == null ? Arrays.asList() : node.suggestion);
+    List<List<String>> result = new ArrayList<>();
+    TrieNode curr = root;
+    for (char c : searchWord.toCharArray()) {
+      if (curr == null) {
+        result.add(new ArrayList<>());
+      } else {
+        if (curr.children[c - 'a'] == null) {
+          curr = null;
+          result.add(new ArrayList<>());
+        } else {
+          curr = curr.children[c - 'a'];
+          PriorityQueue<String> currMatchingProductsQueue = new PriorityQueue<>(curr.matchingProducts);
+          List<String> currMatchingProducts = new ArrayList<>();
+          while (!currMatchingProductsQueue.isEmpty() && currMatchingProducts.size() < 3) {
+            currMatchingProducts.add(currMatchingProductsQueue.poll());
+          }
+          result.add(currMatchingProducts);
         }
-        return result;
+      }
     }
-
-
-    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
-        Arrays.sort(products);
-        for (String product : products) {
-            insert(product);
-        }
-        return search(searchWord);
+    return result;
+  }
+  
+  private class TrieNode {
+    TrieNode[] children;
+    PriorityQueue<String> matchingProducts;
+    
+    public TrieNode() {
+      this.children = new TrieNode[26];
+      this.matchingProducts = new PriorityQueue<>();
     }
+  }
 }
