@@ -1,7 +1,7 @@
 class MyHashSet {
     //find a prime less than 1/100 of MAX RANGE (10^4 is 1/100th of 10^6)
     // private int MOD = 9973;
-    private int MOD = 769;
+    private int MOD = 97;
     private Bucket[] buckets;
     
     public MyHashSet() {
