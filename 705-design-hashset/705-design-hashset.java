@@ -1,69 +1,50 @@
-
 class MyHashSet {
-  private Bucket[] bucketArray;
-  private int keyRange;
-
-  /** Initialize your data structure here. */
-  public MyHashSet() {
-    this.keyRange = 769;
-    this.bucketArray = new Bucket[this.keyRange];
-    for (int i = 0; i < this.keyRange; ++i)
-      this.bucketArray[i] = new Bucket();
-  }
-
-  protected int _hash(int key) {
-    return (key % this.keyRange);
-  }
-
-  public void add(int key) {
-    int bucketIndex = this._hash(key);
-    this.bucketArray[bucketIndex].insert(key);
-  }
-
-  public void remove(int key) {
-    int bucketIndex = this._hash(key);
-    this.bucketArray[bucketIndex].delete(key);
-  }
-
-  /** Returns true if this set contains the specified element */
-  public boolean contains(int key) {
-    int bucketIndex = this._hash(key);
-    return this.bucketArray[bucketIndex].exists(key);
-  }
-}
-
-
-class Bucket {
-  private LinkedList<Integer> container;
-
-  public Bucket() {
-    container = new LinkedList<Integer>();
-  }
-
-  public void insert(Integer key) {
-    int index = this.container.indexOf(key);
-    if (index == -1) {
-      this.container.addFirst(key);
+    //find a prime less than 1/100 of MAX RANGE (10^4 is 1/100th of 10^6)
+    private int MOD = 9973;
+    private Bucket[] buckets;
+    
+    public MyHashSet() {
+        buckets = new Bucket[MOD];
+        for(int i = 0; i < MOD; i++) buckets[i] = new Bucket();
     }
-  }
-
-  public void delete(Integer key) {
-    this.container.remove(key);
-  }
-
-  public boolean exists(Integer key) {
-    int index = this.container.indexOf(key);
-    return (index != -1);
-  }
+    
+    private int getHash(int key){
+        return key % MOD;
+    }
+    
+    public void add(int key) {
+        buckets[getHash(key)].insert(key);
+    }
+    
+    public void remove(int key) {        
+        buckets[getHash(key)].delete(key);
+    }
+    
+    public boolean contains(int key) {
+        return buckets[getHash(key)].exists(key);
+    }
 }
-
-/**
- * Your MyHashSet object will be instantiated and called as such:
- * MyHashSet obj = new MyHashSet();
- * obj.add(key);
- * obj.remove(key);
- * boolean param_3 = obj.contains(key);
- */
+class Bucket {
+    private TreeMap<Integer, Integer> tMap;
+    private int index;
+    
+    public Bucket(){
+        tMap = new TreeMap<Integer, Integer>();
+        index = -1;
+    }
+    
+    public void insert(int val){
+        tMap.put(val, ++index);
+    }
+    
+    public boolean exists(int val){
+        return tMap.containsKey(val);
+    }
+    
+    public void delete(int val){
+        if(exists(val)) tMap.remove(val);
+    }
+}
 
 /**
  * Your MyHashSet object will be instantiated and called as such:
