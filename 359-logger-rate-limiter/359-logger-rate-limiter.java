@@ -1,19 +1,22 @@
 class Logger {
-    private Map<String, Integer> msgTimeMap;
-    private final int deltaTime = 10;
-    public Logger() {
-        this.msgTimeMap = new HashMap<String, Integer>();
-    }
+    private HashMap<String,Integer> lastLogged;
+    private final int THRESHOLD = 10;
     
+    public Logger() {
+        lastLogged = new HashMap<>();
+    }
     public boolean shouldPrintMessage(int timestamp, String message) {
-        if(msgTimeMap.containsKey(message)){ 
-           if(Math.abs(timestamp - msgTimeMap.get(message)) >= deltaTime){
-                msgTimeMap.put(message, timestamp);
-                return true;
-            }else return false;
+        Set<String> keys = new HashSet<String>(lastLogged.keySet());
+        for(String key : keys) {
+            if(timestamp - lastLogged.get(key) >= THRESHOLD) {
+                lastLogged.remove(key);
+            }
         }
-        msgTimeMap.put(message, timestamp);
-        return true;
+        if((timestamp-lastLogged.getOrDefault(message, timestamp-(THRESHOLD+1))) >= THRESHOLD){
+            lastLogged.put(message, timestamp);
+            return true;
+        }
+        return false;
     }
 }
 
