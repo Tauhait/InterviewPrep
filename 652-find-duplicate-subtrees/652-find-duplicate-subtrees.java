@@ -14,22 +14,35 @@
  * }
  */
 class Solution {
+    private Map<String, Integer> cnt;
+    private List<TreeNode> dupNodes;
+    private String split = ",";
     public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-        Map<String, List<TreeNode>> map = new HashMap<String, List<TreeNode>>();
-        List<TreeNode> dups = new ArrayList<TreeNode>();
-        serialize(root, map);
-        for (List<TreeNode> group : map.values())
-            if (group.size() > 1) dups.add(group.get(0));
-        return dups;
+        cnt = new HashMap<>();
+        dupNodes = new ArrayList<>();
+        dfs(root);
+        return dupNodes;
     }
-
-    private String serialize(TreeNode node, Map<String, List<TreeNode>> map) {
-        if (node == null) return "";
-        String left = serialize(node.left, map);
-        String right = serialize(node.right, map);
-        String s = node.val + ">" + left + "L" +  right + "R";
-        if (!map.containsKey(s)) map.put(s, new ArrayList<TreeNode>());
-        map.get(s).add(node);
-        return s;
+    
+    private String dfs(TreeNode node) {
+        if (node == null) {
+            return "null";
+        }
+        String left = dfs(node.left);
+        String right = dfs(node.right);
+        String rst = new StringBuilder().append(node.val).
+                                        append(split).
+                                        append(left).
+                                        append(split).
+                                        append(right).toString();
+        if (cnt.containsKey(rst)) {
+            if (cnt.get(rst) == 1) {
+                dupNodes.add(node);
+            }
+            cnt.put(rst, cnt.get(rst) + 1);
+        } else {
+            cnt.put(rst, 1);
+        }
+        return rst;
     }
 }
