@@ -27,7 +27,7 @@ class Solution {
         if (node == null) return "";
         String left = serialize(node.left, map);
         String right = serialize(node.right, map);
-        String s = "(" + left + node.val + right + ")";
+        String s = node.val + ">" + left + "L" +  right + "R";
         if (!map.containsKey(s)) map.put(s, new ArrayList<TreeNode>());
         map.get(s).add(node);
         return s;
