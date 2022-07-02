@@ -24,7 +24,10 @@ class Solution {
         }
 
         // Be careful of overflow, and don't forget the modulo!
-        return (int) ((maxWidth * maxHeight) % (1000000007));
+        return (int) ((maxWidth * maxHeight) % (1_000_000_007));
+        //below are wrong
+        // return (int) ((maxWidth * maxHeight) % (1e9 + 7));
+        // return (int) ((maxWidth % (1e9 + 7) * maxHeight % (1e9 + 7)));
     }
 }
 /*
