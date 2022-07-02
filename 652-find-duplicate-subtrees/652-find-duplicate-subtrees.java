@@ -15,21 +15,23 @@
  */
 class Solution {
     public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-        Map<String, List<TreeNode>> map = new HashMap<String, List<TreeNode>>();
-        List<TreeNode> dups = new ArrayList<TreeNode>();
-        serialize(root, map);
-        for (List<TreeNode> group : map.values())
-            if (group.size() > 1) dups.add(group.get(0));
-        return dups;
+        List<TreeNode> res = new ArrayList<TreeNode>();
+        HashMap<String, Boolean> subs = new HashMap<String, Boolean>();
+        helper(res, subs, root);
+        return res;
     }
-
-    private String serialize(TreeNode node, Map<String, List<TreeNode>> map) {
-        if (node == null) return "";
-        String left = serialize(node.left, map);
-        String right = serialize(node.right, map);
-        String s = node.val + ">" + left + "L" +  right + "R";
-        if (!map.containsKey(s)) map.put(s, new ArrayList<TreeNode>());
-        map.get(s).add(node);
-        return s;
+    
+    public String helper(List<TreeNode> res, HashMap<String, Boolean> subs, TreeNode root){
+        if(root==null) return ",X";
+        String s = root.val+","+helper(res,subs,root.left)+helper(res,subs,root.right);
+        if(subs.containsKey(s)){
+            if(!subs.get(s)){
+                res.add(root);
+                subs.put(s, true);
+            }            
+        } else{
+            subs.put(s, false);
+        }
+        return s;        
     }
 }
