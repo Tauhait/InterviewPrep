@@ -1,23 +1,45 @@
 class Solution {
-    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
-        int count = 0;
-        Map<Integer, Integer> sumMap = new HashMap<Integer, Integer>();
-        for(int a : nums1){
-            for(int b : nums2){
-                int posSum = a + b;
-                sumMap.put(posSum, sumMap.getOrDefault(posSum, 0) + 1);
+    //generalized for n arrays approach
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        return kSumCount(new int[][]{A, B, C, D});
+    }
+    
+    public int kSumCount(int[][] lists) {
+        Map<Integer, Integer> m = new HashMap<>();
+        addToHash(lists, m, 0, 0);
+        return countComplements(lists, m, lists.length / 2, 0);
+    }
+    
+    private void addToHash(int[][] lists, Map<Integer, Integer> m, int i, int sum) {
+        if (i == lists.length / 2) {
+            m.put(sum, m.getOrDefault(sum, 0) + 1);
+        } else {
+            for (int a : lists[i]) {
+                addToHash(lists, m, i + 1, sum + a);
             }
         }
-        for(int c : nums3){
-            for(int d : nums4){
-                int negSum = -(c + d);
-                count += sumMap.getOrDefault(negSum, 0);
-            }
+    }
+    
+    private int countComplements(int[][] lists, Map<Integer, Integer> m, int i, int complement) {
+        if (i == lists.length) {
+            return m.getOrDefault(complement, 0);
         }
-        return count;
+        int cnt = 0;
+        for (int a : lists[i]) {
+            cnt += countComplements(lists, m, i + 1, complement - a);
+        }
+        return cnt;
     }
 }
 /*
-put any of nums1/2/3/4 into hasset and solve in O(n^3)
-
+take any comb of 
+num1-2 & num3-4 
+or
+num1-3 & nume2-4 
+or
+num1-4 & num2-3
+or 
+etc...
+try to find the reverse of first two sum.
+O(n^2)
 */
