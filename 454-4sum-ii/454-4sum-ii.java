@@ -3,12 +3,12 @@ class Solution {
         int count = 0;
         Map<Integer, Integer> sumMap = new HashMap<Integer, Integer>();
         for(int a : nums1){
-            for(int b : nums3){
+            for(int b : nums2){
                 int posSum = a + b;
                 sumMap.put(posSum, sumMap.getOrDefault(posSum, 0) + 1);
             }
         }
-        for(int c : nums2){
+        for(int c : nums3){
             for(int d : nums4){
                 int negSum = -(c + d);
                 count += sumMap.getOrDefault(negSum, 0);
