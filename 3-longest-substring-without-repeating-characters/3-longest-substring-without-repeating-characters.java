@@ -6,7 +6,8 @@ class Solution {
         
         while(right < s.length()){
             char c = s.charAt(right);
-            //if charset char is not null and present in current window[left, right] then reduce window
+            //if charset char is not null and present in current window[left, right] 
+            //then shrink window by [left = charset[c]+1, right]
             if(charSet[c] != null && charSet[c] >= left) left = charSet[c] + 1;
             res = Math.max(res, right - left + 1);
             charSet[c] = right;
