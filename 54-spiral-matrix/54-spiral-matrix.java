@@ -1,42 +1,47 @@
-class Solution {
+public class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
-        List<Integer> result = new ArrayList<>();
-        int rows = matrix.length;
-        int columns = matrix[0].length;
-        int up = 0;
-        int left = 0;
-        int right = columns - 1;
-        int down = rows - 1;
-
-        while (result.size() < rows * columns) {
-            // Traverse from left to right.
-            for (int col = left; col <= right; col++) {
-                result.add(matrix[up][col]);
-            }
-            // Traverse downwards.
-            for (int row = up + 1; row <= down; row++) {
-                result.add(matrix[row][right]);
-            }
-            // Make sure we are now on a different row.
-            if (up != down) {
-                // Traverse from right to left.
-                for (int col = right - 1; col >= left; col--) {
-                    result.add(matrix[down][col]);
-                }
-            }
-            // Make sure we are now on a different column.
-            if (left != right) {
-                // Traverse upwards.
-                for (int row = down - 1; row > up; row--) {
-                    result.add(matrix[row][left]);
-                }
-            }
-            left++;
-            right--;
-            up++;
-            down--;
+        
+        List<Integer> res = new ArrayList<Integer>();
+        
+        if (matrix.length == 0) {
+            return res;
         }
-
-        return result;
+        
+        int rowBegin = 0;
+        int rowEnd = matrix.length-1;
+        int colBegin = 0;
+        int colEnd = matrix[0].length - 1;
+        
+        while (rowBegin <= rowEnd && colBegin <= colEnd) {
+            // Traverse Right
+            for (int j = colBegin; j <= colEnd; j ++) {
+                res.add(matrix[rowBegin][j]);
+            }
+            rowBegin++;
+            
+            // Traverse Down
+            for (int j = rowBegin; j <= rowEnd; j ++) {
+                res.add(matrix[j][colEnd]);
+            }
+            colEnd--;
+            
+            if (rowBegin <= rowEnd) {
+                // Traverse Left
+                for (int j = colEnd; j >= colBegin; j --) {
+                    res.add(matrix[rowEnd][j]);
+                }
+            }
+            rowEnd--;
+            
+            if (colBegin <= colEnd) {
+                // Traver Up
+                for (int j = rowEnd; j >= rowBegin; j --) {
+                    res.add(matrix[j][colBegin]);
+                }
+            }
+            colBegin ++;
+        }
+        
+        return res;
     }
 }
