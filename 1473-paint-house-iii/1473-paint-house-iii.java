@@ -7,16 +7,25 @@ class Solution {
     private int[][] cost;
     
     int findMinCost(int targetCount, int currIndex, int neighborhoodCount, int prevHouseColor) {
+        /*
+        Base Case
+        */
         if (currIndex == houses.length) {
             // If all houses are traversed, check if the neighbor count is as expected or not
             return neighborhoodCount == targetCount ? 0 : MAX_COST;
         }
-        
+        /*
+        Base Case
+        */
         if (neighborhoodCount > targetCount) {
             // If the neighborhoods are more than the threshold, we can't have target neighborhoods
             return MAX_COST;
         }
+        /*
+        Memoization state identifier
+        */
         String key = currIndex+","+neighborhoodCount+","+prevHouseColor;
+        
         // We have already calculated the answer so no need to go into recursion
         if (memo.get(key) != null) return memo.get(key);
         
