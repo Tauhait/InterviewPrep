@@ -1,11 +1,12 @@
 class Solution {
     // Assign the size as per maximum value for different params
-    Integer[][][] memo = new Integer[100][100][21];
+    private Map<String, Integer> memo = new HashMap<String,Integer>();
     // Maximum cost possible plus 1
-    final int MAX_COST = 1000001;
+    private final int MAX_COST = 1000001;
+    private int[] houses;
+    private int[][] cost;
     
-    int findMinCost(int[] houses, int[][] cost, int targetCount, int currIndex,
-                    int neighborhoodCount, int prevHouseColor) {
+    int findMinCost(int targetCount, int currIndex, int neighborhoodCount, int prevHouseColor) {
         if (currIndex == houses.length) {
             // If all houses are traversed, check if the neighbor count is as expected or not
             return neighborhoodCount == targetCount ? 0 : MAX_COST;
@@ -15,19 +16,16 @@ class Solution {
             // If the neighborhoods are more than the threshold, we can't have target neighborhoods
             return MAX_COST;
         }
-        
+        String key = currIndex+","+neighborhoodCount+","+prevHouseColor;
         // We have already calculated the answer so no need to go into recursion
-        if (memo[currIndex][neighborhoodCount][prevHouseColor] != null) {
-            return memo[currIndex][neighborhoodCount][prevHouseColor];
-        }
+        if (memo.get(key) != null) return memo.get(key);
         
         int minCost = MAX_COST;
         // If the house is already painted, update the values accordingly
         if (houses[currIndex] != 0) {
             int newNeighborhoodCount = neighborhoodCount + 
                                     (houses[currIndex] != prevHouseColor ? 1 : 0);
-            minCost = findMinCost(houses, cost, targetCount, currIndex + 1, 
-                            newNeighborhoodCount, houses[currIndex]);
+            minCost = findMinCost(targetCount, currIndex + 1, newNeighborhoodCount, houses[currIndex]);
         } else {
             int totalColors = cost[0].length;
             
@@ -35,17 +33,20 @@ class Solution {
             for (int color = 1; color <= totalColors; color++) {
                 int newNeighborhoodCount = neighborhoodCount + (color != prevHouseColor ? 1 : 0);
                 int currCost = cost[currIndex][color - 1] 
-                    + findMinCost(houses, cost, targetCount, currIndex + 1, newNeighborhoodCount, color);
+                    + findMinCost(targetCount, currIndex + 1, newNeighborhoodCount, color);
                 minCost = Math.min(minCost, currCost);
             }
         }
         
         // Return the minimum cost and also storing it for future reference (memoization)
-        return memo[currIndex][neighborhoodCount][prevHouseColor] = minCost;
+        memo.put(key, minCost);
+        return memo.get(key);
     }
     
     public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
-        int answer = findMinCost(houses, cost, target, 0, 0, 0);
+        this.houses = houses;
+        this.cost = cost;
+        int answer = findMinCost(target, 0, 0, 0);
         // Return -1 if the answer is MAX_COST as it implies no answer possible
         return answer == MAX_COST ? -1 : answer;
     }
