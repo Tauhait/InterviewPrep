@@ -14,31 +14,22 @@
  * }
  */
 class Solution {
+    List<Integer> rightside = new ArrayList();
+    
+    public void helper(TreeNode node, int level) {
+        if (level == rightside.size()) 
+            rightside.add(node.val);
+        
+        if (node.right != null) 
+            helper(node.right, level + 1);  
+        if (node.left != null) 
+            helper(node.left, level + 1);
+    }    
+    
     public List<Integer> rightSideView(TreeNode root) {
-        if (root == null) return new ArrayList<Integer>();
+        if (root == null) return rightside;
         
-        ArrayDeque<TreeNode> queue = new ArrayDeque(){{ offer(root); }};
-        List<Integer> rightside = new ArrayList();
-        
-        while (!queue.isEmpty()) {
-            int levelLength = queue.size();
-
-            for(int i = 0; i < levelLength; ++i) {
-                TreeNode node = queue.poll();
-                // if it's the rightmost element
-                if (i == levelLength - 1) {
-                    rightside.add(node.val);    
-                }
-
-                // add child nodes in the queue
-                if (node.left != null) {
-                    queue.offer(node.left);    
-                }
-                if (node.right != null) {
-                    queue.offer(node.right);
-                }
-            }
-        }
+        helper(root, 0);
         return rightside;
     }
 }
