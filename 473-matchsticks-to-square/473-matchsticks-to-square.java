@@ -19,7 +19,9 @@ class Solution {
             return false;
         }
         for (int i = 0; i < 4; i++) {
-            if (sums[i] + nums[index] > target) continue;
+            // if (sums[i] + nums[index] > target 
+            //We can add another check to avoid repeated calculations.
+            if (sums[i] + nums[index] > target || (i > 0 && sums[i] == sums[i - 1])) continue;
             sums[i] += nums[index];
             if (dfs(nums, sums, index -1, target)) return true;
             sums[i] -= nums[index];
