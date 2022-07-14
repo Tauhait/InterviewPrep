@@ -14,30 +14,32 @@
  * }
  */
 class Solution {
+    private Map<Integer, Integer> inOrderMap;
+    private int preOrderIndex;
+    private int[] preOrder;
+    
+    public Solution(){
+        this.inOrderMap = new HashMap<Integer, Integer>();
+        this.preOrderIndex = 0;
+    }
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-	    Map<Integer, Integer> inMap = new HashMap<Integer, Integer>();
+        this.preOrder = preorder;
+        
+	    for(int i = 0; i < inorder.length; i++) inOrderMap.put(inorder[i], i);
 
-	    for(int i = 0; i < inorder.length; i++) {
-	        inMap.put(inorder[i], i);
-	    }
-
-	    TreeNode root = buildTreeHelper(preorder, 0, preorder.length - 1, 
-                                        inorder, 0, inorder.length - 1, inMap);
+	    TreeNode root = buildTreeHelper(0, inorder.length-1);
 	    return root;
 	}
+    //Using preorder to get current root val and 
+    //inorder to build the tree by getting the root index from preorder
+	public TreeNode buildTreeHelper(int left, int right) {
+	    if(left > right) return null;
+        
+        int rootVal = preOrder[preOrderIndex++];
+	    TreeNode root = new TreeNode(rootVal);
 
-	public TreeNode buildTreeHelper(int[] preorder, int preStart, int preEnd, 
-                                    int[] inorder, int inStart, int inEnd, Map<Integer, Integer> inMap) {
-	    if(preStart > preEnd || inStart > inEnd) return null;
-
-	    TreeNode root = new TreeNode(preorder[preStart]);
-	    int inRoot = inMap.get(root.val);
-	    int numsLeft = inRoot - inStart;
-
-	    root.left = buildTreeHelper(preorder, preStart + 1, preStart + numsLeft, 
-                                    inorder, inStart, inRoot - 1, inMap);
-	    root.right = buildTreeHelper(preorder, preStart + numsLeft + 1, preEnd, 
-                                     inorder, inRoot + 1, inEnd, inMap);
+	    root.left = buildTreeHelper(left, inOrderMap.get(rootVal)-1);
+	    root.right = buildTreeHelper(inOrderMap.get(rootVal)+1, right);
 
 	    return root;
 	}
