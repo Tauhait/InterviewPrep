@@ -30,7 +30,7 @@ public class Solution {
     }
     public boolean testWord(char[] chars, int index, TrieNode root, int count) {
         // count means how many words during the search path
-        // if(count > 1) return true;
+        // if(count > 2) return true;
         TrieNode cur = root;
         int n = chars.length;
         for (int i = index; i < n; i++) {
@@ -41,6 +41,8 @@ public class Solution {
                 if (i == n - 1) { // no next word, so test count to get result.
                     return count >= 1;
                 }
+                //true: if count > 1 condition 
+                //doesnt work bcz we have not yet checked (i+1,n-1) part of the word
                 if (testWord(chars, i + 1, root, count + 1)) {
                     return true;
                 }
