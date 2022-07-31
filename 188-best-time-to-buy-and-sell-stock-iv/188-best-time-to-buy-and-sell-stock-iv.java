@@ -1,24 +1,26 @@
 class Solution {
-    private int[] prices;
-    private int[][][] memo;
-    
-    private int dp(int i, int remTransaction, int isHolding){
-        if(remTransaction == 0 || i == prices.length){
-            return 0;
-        }
-        if(memo[i][remTransaction][isHolding] == 0){        
-            int doNothing = dp(i + 1, remTransaction, isHolding);
-            int sellStock = prices[i] + dp(i + 1, remTransaction - 1, 0);
-            int buyStock = -prices[i] + dp(i + 1, remTransaction, 1);
-            memo[i][remTransaction][isHolding] = isHolding == 1 ? Math.max(doNothing, sellStock) : 
-                                                        Math.max(doNothing, buyStock);
-        }
-        return memo[i][remTransaction][isHolding];
-    }
     public int maxProfit(int k, int[] prices) {
-        this.prices = prices;
-        memo = new int[prices.length][k + 1][2];
-        
-        return dp(0, k, 0);
+        int days = prices.length;
+        int maxProfit = 0;
+        if(days == 0) return 0;
+        if(2*k >= days) {
+            int prevPrice = prices[0];
+            for(int day = 1; day < days; day++){
+                maxProfit += Math.max(0, prices[day]-prevPrice);
+                prevPrice = prices[day];
+            }
+            return maxProfit;
+        }
+        int[] profits = new int[days];
+        while(k-- > 0){
+            int profit = 0;
+            for(int day = 1; day < days; day++){
+                profit = Math.max(profits[day], profit+prices[day]-prices[day-1]);
+                profits[day] = Math.max(profits[day-1], profit);
+            }
+        }
+        return profits[days-1];
     }
+    //time complexity = O(nk)
+    //space complexity = O(n)
 }
