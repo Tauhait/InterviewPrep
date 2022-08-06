@@ -1,32 +1,22 @@
 class Solution {
-    private List<List<Integer>> ans;
-    private int k;
-    private int n;
+    private void backtrack(int index, int len, int k, int remain,
+                           LinkedList<Integer> comb, List<List<Integer>> ans){
+        if(remain < 0 || len > k) return;
+        if(len == k){
+            if(remain == 0) ans.add(new ArrayList<>(comb));
+            return;
+        }
+        for(int pos = index; pos <= 9; pos++){
+            comb.add(pos);
+            backtrack(pos+1, len+1, k, remain-pos, comb, ans);
+            comb.removeLast();            
+        }        
+    }
     public List<List<Integer>> combinationSum3(int k, int n) {
-        ans = new ArrayList();
-        this.k = k;
-        this.n = n;
-        boolean[] isUsed = new boolean[10];
-        backtrack(0, 1, new ArrayList<Integer>(), isUsed);
+        List<List<Integer>> ans = new ArrayList<>();
+        LinkedList<Integer> comb = new LinkedList<>();
+        backtrack(1, 0, k, n, comb, ans);
         return ans;
     }
-    private void backtrack(int currSum, int val, List<Integer> combinations, boolean[] isUsed){
-        if(combinations.size() == k){
-            if(currSum == n){
-                ans.add(new ArrayList(combinations));                
-            }            
-        }
-        
-        for(int i = val; i <= 9; i++){
-            if(isUsed[i]){
-                continue;
-            }
-            combinations.add(i);
-            isUsed[i] = true;
-            backtrack(currSum + i, i, combinations, isUsed);
-            isUsed[i] = false;
-            int len = combinations.size();
-            combinations.remove(len - 1);
-        }
-    }
+    //time complexity = O()
 }
