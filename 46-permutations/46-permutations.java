@@ -21,4 +21,6 @@ class Solution {
         backtrack(nums, new ArrayList<Integer>(), new HashSet<Integer>());
         return ans;
     }
+    //time complexity  = O(n * n!)
+    //space complexity = O(n!)
 }
