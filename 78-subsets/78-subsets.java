@@ -1,18 +1,20 @@
 class Solution {
-    List<List<Integer>> ans = new ArrayList<List<Integer>>();
-    
-    private void backtrack(int[] nums, int index, LinkedList<Integer> temp){
-        if(temp.size() == nums.length) return;
-        for(int i = index; i < nums.length; i++){
-            temp.add(nums[i]);
-            backtrack(nums, i+1, temp);
-            ans.add(new ArrayList<Integer>(temp));
-            temp.removeLast();
-        }
-    }
     public List<List<Integer>> subsets(int[] nums) {
-        backtrack(nums, 0, new LinkedList<Integer>());
-        ans.add(new ArrayList<Integer>());
-        return ans;
+        List<List<Integer>> output = new ArrayList();
+        int n = nums.length;
+        int nthBit = 1 << n;
+        for (int i = 0; i < (int)Math.pow(2, n); ++i) {
+          // generate bitmask, from 0..00 to 1..11
+          String bitmask = Integer.toBinaryString(i | nthBit).substring(1);
+          // append subset corresponding to that bitmask
+          List<Integer> curr = new ArrayList();
+          for (int j = 0; j < n; ++j) {
+            if (bitmask.charAt(j) == '1') curr.add(nums[j]);
+          }
+          output.add(curr);
+        }
+        return output;
     }
+    //time complexity = O(N * 2^N)
+    //space complexity = O(N)
 }
