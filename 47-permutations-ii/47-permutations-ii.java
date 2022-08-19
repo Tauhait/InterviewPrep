@@ -1,38 +1,26 @@
 class Solution {
-    private List<List<Integer>> result;
-    private int[] nums;
-    private Map<Integer, Integer> numFreq;
+    private List<List<Integer>> ans;
     
-    public List<List<Integer>> permuteUnique(int[] nums) {
-        result = new ArrayList();
-        this.nums = nums;
-        numFreq = new HashMap();
-        for(int n : nums){
-            numFreq.put(n, numFreq.getOrDefault(n, 0) + 1);
-        }
-        backtrack(new LinkedList<Integer>());
-        return result;
-    }
-    private void backtrack(LinkedList<Integer> combList){
-        if(combList.size() == nums.length){
-            result.add(new ArrayList<Integer>(combList));
+    private void backtrack(List<Integer> tempList, int [] nums, boolean [] used){
+        if(tempList.size() == nums.length){
+            ans.add(new ArrayList<>(tempList));
             return;
         }
-        for(Map.Entry<Integer, Integer> entry : numFreq.entrySet()){
-            Integer num = entry.getKey();
-            Integer count = entry.getValue();
-            
-            if(count == 0){
-                continue;
-            }
-            
-            combList.addLast(num);
-            numFreq.put(num, count - 1);
-            
-            backtrack(combList);
-            
-            combList.removeLast();
-            numFreq.put(num, count);            
+        for(int i = 0; i < nums.length; i++){
+            if(used[i] || (i > 0 && nums[i] == nums[i-1] && !used[i-1])) continue;
+            used[i] = true; 
+            tempList.add(nums[i]);
+            backtrack(tempList, nums, used);
+            used[i] = false; 
+            tempList.remove(tempList.size()-1);
         }
     }
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        ans = new ArrayList<>();
+        Arrays.sort(nums);
+        backtrack(new ArrayList<>(), nums, new boolean[nums.length]);
+        return ans;
+    }    
+    //time complexity  = O(n * n!)
+    //space complexity = O(n)
 }
