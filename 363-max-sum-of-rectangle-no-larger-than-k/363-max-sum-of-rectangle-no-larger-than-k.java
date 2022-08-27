@@ -1,28 +1,30 @@
 class Solution {
     public int maxSumSubmatrix(int[][] matrix, int k) {
-        int m = matrix.length, n = matrix[0].length;
-        int ans = Integer.MIN_VALUE;
-        for (int r1 = 0; r1 < m; ++r1) {
-            int[] arr = new int[n]; // arr[i] is sum(matrix[r1][c]...matrix[r2][c])
-            for (int r2 = r1; r2 < m; ++r2) {
-                for (int c = 0; c < n; ++c) arr[c] += matrix[r2][c];
-                ans = Math.max(ans, maxSumSubArray(arr, n, k));
+        int res = Integer.MIN_VALUE, rows = matrix.length, cols = matrix[0].length;
+        for(int l = 0; l < cols; l++){
+            int[] sum = new int[rows];
+            for(int j = l; j < cols; j++){
+                int kadane  = 0, maxKadane = Integer.MIN_VALUE;
+                for(int i = 0; i < rows; i++){
+                    sum[i]+=matrix[i][j];
+                    kadane = Math.max(kadane + sum[i], sum[i]);
+                    maxKadane = Integer.max(maxKadane, kadane);
+                }                
+                if(maxKadane <= k){
+                    res = Math.max(res, maxKadane);
+                    continue;
+                }        
+                TreeSet<Integer> set = new TreeSet<>();
+                int runSum = 0;
+                set.add(0);
+                for(int s : sum){
+                    runSum+= s;
+                    Integer t = set.ceiling(runSum-k);
+                    if(t != null)res = Math.max(res, runSum-t);
+                    set.add(runSum);
+                }
             }
         }
-        return ans;
-    }
-    int maxSumSubArray(int[] arr, int n, int k) { // O(N * logN)
-        TreeSet<Integer> bst = new TreeSet<>();
-        bst.add(0);
-        int ans = Integer.MIN_VALUE;
-        for (int i = 0, right = 0; i < n; ++i) {
-            right += arr[i];
-            Integer left = bst.ceiling(right - k); // right - left <= k -> left >= right - k
-            if (left != null) {
-                ans = Math.max(ans, right - left);
-            }
-            bst.add(right);
-        }
-        return ans;
+        return  res;
     }
 }
