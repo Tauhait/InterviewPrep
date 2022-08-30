@@ -1,22 +1,15 @@
 class Solution {
     public int thirdMax(int[] nums) {
-        // Put the input integers into a HashSet.
-        Set<Integer> setNums = new HashSet<>();
-        for (int num : nums) setNums.add(num);
-
-        // Find the maximum.
-        int maximum = Collections.max(setNums);
-
-        // Check whether or not this is a case where we
-        // need to return the *maximum*.
-        if (setNums.size() < 3) {
-            return maximum;
+        Set<Integer> maximums = new HashSet<Integer>();
+        for (int num : nums) {
+            maximums.add(num);
+            if (maximums.size() > 3) {
+                maximums.remove(Collections.min(maximums));
+            }
         }
-
-        // Otherwise, continue on to finding the third maximum.
-        setNums.remove(maximum);
-        int secondMaximum = Collections.max(setNums);
-        setNums.remove(secondMaximum);
-        return Collections.max(setNums);
+        if (maximums.size() == 3) {
+            return Collections.min(maximums);
+        }
+        return Collections.max(maximums);
     }
 }
