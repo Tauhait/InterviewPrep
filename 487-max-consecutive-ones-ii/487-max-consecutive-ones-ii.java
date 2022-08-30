@@ -1,22 +1,14 @@
 class Solution {
-    public int findMaxConsecutiveOnes(int[] nums) {
-        int prevZero = -1, lastZero = 0;
-        int maxLen = 0;
-        int i = 0;
-        for(; i < nums.length; i++){
-            if(nums[i] == 0) {
-                if(prevZero == -1) {
-                    prevZero = i;
-                    continue;
-                }
-                else {
-                    maxLen = Math.max(maxLen, i-lastZero);
-                    lastZero = prevZero+1;
-                }
-                prevZero = i;
-            }
+    public int findMaxConsecutiveOnes(int[] nums) {                 
+        int max = 0, k = 1; // flip at most k zero
+        Queue<Integer> zeroIndex = new LinkedList<>(); //to handle infinite stream
+        for (int l = 0, h = 0; h < nums.length; h++) {
+            if (nums[h] == 0)
+                zeroIndex.offer(h);
+            if (zeroIndex.size() > k)                                   
+                l = zeroIndex.poll() + 1;
+            max = Math.max(max, h - l + 1);
         }
-        maxLen = Math.max(maxLen, i-lastZero);
-        return maxLen;
+        return max;                     
     }
 }
