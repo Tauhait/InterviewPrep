@@ -1,20 +1,22 @@
 class Solution {
-    public void nextPermutation(int[] nums) {
-        int len = nums.length;
-        if(len != 0){
-            int right = len - 2;
-            while(right >= 0 && nums[right + 1] <= nums[right]) right--;
-            if(right >= 0) {
-                int largThanRight = len - 1;
-                while(largThanRight >= 0 && nums[largThanRight] <= nums[right]) largThanRight--;
-                swap(nums, right, largThanRight);
-            }
-            for(int start = right + 1, last = len - 1; start < last; start++, last--) swap(nums, start, last);
-        }
+    private void swap(int[] arr, int i, int j){
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
-    private void swap(int[] nums, int first, int second){
-        int temp = nums[first];
-        nums[first] = nums[second];
-        nums[second] = temp;
+    private void reverse(int[] arr, int i, int j){
+        while(i <= j) swap(arr, i++, j--);
+    }
+    public void nextPermutation(int[] nums) {
+        if(nums == null || nums.length <= 1) return;
+        int len = nums.length;
+        int i = len-2;
+        while(i >= 0 && nums[i] >= nums[i+1]) i--;
+        if(i >= 0){
+            int j = len-1;
+            while(nums[i] >= nums[j]) j--;
+            swap(nums, i, j);
+        }
+        reverse(nums, i+1, len-1);
     }
 }
