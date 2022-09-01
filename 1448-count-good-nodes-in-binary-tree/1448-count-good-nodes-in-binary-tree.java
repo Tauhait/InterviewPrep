@@ -14,19 +14,20 @@
  * }
  */
 class Solution {    
-    private int findGoodNodes(TreeNode node, int maxInPath){
-        if(node == null) 
-            return 0;
-        int goodNodeCount = 0;
-        if(node.val >= maxInPath) 
-            goodNodeCount++;
-        if(node.left != null) 
-            goodNodeCount += findGoodNodes(node.left, Math.max(maxInPath, node.val));
-        if(node.right != null) 
-            goodNodeCount += findGoodNodes(node.right, Math.max(maxInPath, node.val));
-        return goodNodeCount;
+    private int numGoodNodes = 0;
+    
+    public int goodNodes(TreeNode root) {
+        dfs(root, Integer.MIN_VALUE);
+        return numGoodNodes;
     }
-    public int goodNodes(TreeNode root) {        
-        return findGoodNodes(root, Integer.MIN_VALUE);
+    private void dfs(TreeNode node, int maxSoFar) {
+        if (maxSoFar <= node.val) 
+            numGoodNodes++;
+        
+        if (node.right != null) 
+            dfs(node.right, Math.max(node.val, maxSoFar));
+
+        if (node.left != null)
+            dfs(node.left, Math.max(node.val, maxSoFar));
     }
 }
