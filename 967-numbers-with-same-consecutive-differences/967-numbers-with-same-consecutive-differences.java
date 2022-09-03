@@ -3,8 +3,7 @@ class Solution {
     
     private void backtrack(StringBuilder number, int n, int k){
         if(number.length() == n) {
-            String temp = new String(number.toString());
-            numbers.add(temp);
+            numbers.add(number.toString());
             return;
         }
         for(int i = 0; i <= 9; i++){
