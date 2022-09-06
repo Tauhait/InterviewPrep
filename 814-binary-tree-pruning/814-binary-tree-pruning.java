@@ -21,11 +21,13 @@ class Solution {
         }
         TreeNode left = null, right = null;
         if(root.left != null)
-            left = pruneTree(root.left);
-        if(left == null) root.left = null;
+            left = pruneTree(root.left);        
         if(root.right != null)
             right = pruneTree(root.right);
+        
+        if(left == null) root.left = null;
         if(right == null) root.right = null;
+        
         if(root.val == 0) {
             if(left == null && right == null) root = null;
         }
