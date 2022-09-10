@@ -1,26 +1,29 @@
 class Solution {
     public int maxProfit(int k, int[] prices) {
-        int days = prices.length;
-        int maxProfit = 0;
-        if(days == 0) return 0;
-        if(2*k >= days) {
-            int prevPrice = prices[0];
-            for(int day = 1; day < days; day++){
-                maxProfit += Math.max(0, prices[day]-prevPrice);
-                prevPrice = prices[day];
+        int n = prices.length;
+        int dp[][][] = new int[n + 1][k + 1][2];
+        
+        for (int i = n - 1; i >= 0; i--) {
+            for (int transactionsRemaining = 1; transactionsRemaining <= k; transactionsRemaining++) {
+                for (int holding = 0; holding < 2; holding++) {
+                    int doNothing = dp[i + 1][transactionsRemaining][holding];
+                    int doSomething;
+                    if (holding == 1) {
+                        // Sell stock
+                        doSomething = prices[i] + dp[i + 1][transactionsRemaining - 1][0];
+                    } else {
+                        // Buy stock
+                        doSomething = -prices[i] + dp[i + 1][transactionsRemaining][1];
+                    }
+                    
+                    // Recurrence relation
+                    dp[i][transactionsRemaining][holding] = Math.max(doNothing, doSomething);
+                }
             }
-            return maxProfit;
         }
-        int[] profits = new int[days];
-        while(k-- > 0){
-            int profit = 0;
-            for(int day = 1; day < days; day++){
-                profit = Math.max(profits[day], profit+prices[day]-prices[day-1]);
-                profits[day] = Math.max(profits[day-1], profit);
-            }
-        }
-        return profits[days-1];
+        
+        return dp[0][k][0];
     }
     //time complexity = O(nk)
-    //space complexity = O(n)
+    //space complexity = O(nk)
 }
