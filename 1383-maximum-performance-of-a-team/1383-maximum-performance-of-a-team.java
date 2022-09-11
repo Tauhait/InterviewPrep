@@ -11,35 +11,46 @@ class Solution {
     The priority queue is maintained as a sliding window along with our iteration. 
     For example, we pop out the member with the lowest speed 
     when we exceed the predefined capacity of the queue, which is k-1.
+    
+    
+    Performance = sum(speed) * min(efficiency). 
+    Idea is simple: try every efficiency value from highest to lowest and 
+    at the same time maintain an as-large-as-possible speed group, 
+    keep adding speed to total speed, 
+    if size of engineers group exceeds K, lay off the engineer with lowest speed.
+    
+    Sort efficiency with descending order. Because, afterwards, 
+    when we iterate whole engineers, every round,
+    when calculating the current performance, 
+    minimum efficiency is the effiency of the new incoming engineer.
+    
+    Maintain a pq to track of the minimum speed in the group. 
+    If size of group is == K, 
+    kick the engineer with minimum speed out
+    (since efficiency is fixed by new coming engineer, 
+    the only thing matters now is sum of speed).
+    
+    Calculate/Update performance.
     */
     public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
-        int modulo = 1_000_000_007;
-        // build tuples of (efficiency, speed)
-        List<Pair<Integer, Integer>> candidates = new ArrayList<>();
-        for (int i = 0; i < n; ++i) {
-            candidates.add(new Pair(efficiency[i], speed[i]));
+        int MOD = 1_000_000_007;
+        int[][] engineers = new int[n][2];
+        for (int i = 0; i < n; ++i) 
+            engineers[i] = new int[] {efficiency[i], speed[i]};
+
+        Arrays.sort(engineers, (a, b) -> b[0] - a[0]);
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(k, (a, b) -> a - b);
+        long res = Long.MIN_VALUE, totalSpeed = 0;
+
+        for (int[] engineer : engineers) {
+            if (pq.size() == k) totalSpeed -= pq.poll();  // layoff the one with min speed
+            pq.add(engineer[1]);
+            totalSpeed = (totalSpeed + engineer[1]);
+            // min efficiency is the efficiency of new engineer
+            res = Math.max(res, (totalSpeed * engineer[0]));  
         }
-        // sort the members by their efficiencies
-        Collections.sort(candidates, (a,b)->(b.getKey()-a.getKey()));
 
-        // create a heap to keep the top (k-1) speeds
-        PriorityQueue<Integer> speedHeap = new PriorityQueue<>((o1, o2) -> o1 - o2);
-
-        long speedSum = 0, perf = 0;
-        for (Pair<Integer, Integer> p : candidates) {
-            Integer currEfficiency = p.getKey();
-            Integer currSpeed = p.getValue();
-            // maintain a heap for the fastest (k-1) speeds
-            if (speedHeap.size() > k - 1) {
-                speedSum -= speedHeap.remove();
-            }
-            speedHeap.add(currSpeed);
-
-            // calculate the maximum performance with
-            // the current member as the least efficient one in the team
-            speedSum += currSpeed;
-            perf = Math.max(perf, speedSum * currEfficiency);
-        }
-        return (int) (perf % modulo);
+        return (int) (res % MOD);
     }
 }
