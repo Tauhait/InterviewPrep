@@ -15,36 +15,34 @@
  */
 class Solution {
     private int pseudoCount;
-    private Map<Integer,Integer> freq;
+    private int[] freq;
     public Solution(){
         pseudoCount = 0;
-        freq = new HashMap<Integer,Integer>();
+        freq = new int[11];
     }    
     private boolean isPalindrome(){
         int odds  = 0;
-        int evens = 0;
-        for(Map.Entry<Integer,Integer> entry : freq.entrySet()){
-            if(entry.getValue() % 2 == 1) ++odds;
-            else evens++;
+        for(int val : freq){
+            if((val & 1) == 1) ++odds;
             if(odds > 1) return false;
         }       
         return true;
     }
     private void helper(TreeNode node){
         if(node.left == null && node.right == null){
-            freq.put(node.val, freq.getOrDefault(node.val,0)+1);
+            freq[node.val]++;
             if(isPalindrome()) 
                 ++pseudoCount;
-            freq.put(node.val, freq.get(node.val)-1);
+            freq[node.val]--;
             return;
         }
-        freq.put(node.val, freq.getOrDefault(node.val,0)+1);
+        freq[node.val]++;
         
         if(node.left != null)  helper(node.left);
         
         if(node.right != null) helper(node.right);
         
-        freq.put(node.val, freq.get(node.val)-1);
+        freq[node.val]--;
     }
     public int pseudoPalindromicPaths (TreeNode root) {
         if(root.left == null && root.right == null) return 1;
