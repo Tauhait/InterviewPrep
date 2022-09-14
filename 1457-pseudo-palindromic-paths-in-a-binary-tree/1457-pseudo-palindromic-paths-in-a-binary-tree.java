@@ -45,7 +45,7 @@ class Solution {
         freq[node.val]--;
     }
     public int pseudoPalindromicPaths (TreeNode root) {
-        if(root.left == null && root.right == null) return 1;
+        // if(root.left == null && root.right == null) return 1;
         helper(root);
         return pseudoCount;
     }
