@@ -1,31 +1,20 @@
 class Solution {
-    public int[] sumEvenAfterQueries(int[] nums, int[][] queries) {
-        int evenSum = 0;
-        for(int n : nums) 
-            if(n % 2 == 0) 
-                evenSum += n;
-        
-        int q = queries.length;
-        int[] ans = new int[q];
-        
-        for(int i = 0; i < q; i++){
-            int j = queries[i][1];
-            if(nums[j] % 2 == 0){
-                int prev = nums[j];
-                nums[j] += queries[i][0];
-                evenSum -= prev;
-                if(nums[j] % 2 == 0)
-                    evenSum += nums[j];                               
-            }else {
-                if((nums[j] + queries[i][0]) % 2 == 0){
-                    nums[j] += queries[i][0];
-                    evenSum += nums[j];
-                }else {
-                    nums[j] += queries[i][0];
-                }
-            }
-            ans[i] = evenSum;
+    public int[] sumEvenAfterQueries(int[] A, int[][] queries) {
+        int S = 0;
+        for (int x: A)
+            if (x % 2 == 0)
+                S += x;
+
+        int[] ans = new int[queries.length];
+
+        for (int i = 0; i < queries.length; ++i) {
+            int val = queries[i][0], index = queries[i][1];
+            if (A[index] % 2 == 0) S -= A[index];
+            A[index] += val;
+            if (A[index] % 2 == 0) S += A[index];
+            ans[i] = S;
         }
+
         return ans;
     }
 }
