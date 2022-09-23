@@ -1,12 +1,13 @@
 class Solution {
     public int concatenatedBinary(int n) {
         final int MOD = 1_000_000_007;
-        int result = 0;
+        long result = 0, len = 0;
         for(int i = 1; i <= n; i++){
-            String number = Integer.toBinaryString(i);
-            for(char c : number.toCharArray())
-                result = (result*2 + (c-'0')) % MOD;
+            if(Math.pow(2, (int)(Math.log10(i)/Math.log10(2))) == i)
+                ++len;
+            result = (result << len) % MOD;
+            result = (result + i)    % MOD;
         }
-        return result;
+        return (int)result;
     }
 }
