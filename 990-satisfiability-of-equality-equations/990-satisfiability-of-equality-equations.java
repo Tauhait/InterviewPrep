@@ -13,10 +13,11 @@ class Solution {
             if(equation.charAt(1) == '!'){
                 if(uf.find(var1) == uf.find(var2))
                     return false;
-            }else {
-                if(uf.find(var1) != uf.find(var2))
-                    return false;
-            }                
+            }
+            // else {
+            //     if(uf.find(var1) != uf.find(var2))
+            //         return false;
+            // }                
         }
         return true;
     }
