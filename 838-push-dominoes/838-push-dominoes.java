@@ -1,47 +1,30 @@
 class Solution {
-    public String pushDominoes(String dominoes) {
-        int len = dominoes.length();
-        Queue<Pair<Integer,Character>> bfsQ = new LinkedList<>();
-        for(int i = 0; i < len; i++){
-            char c = dominoes.charAt(i);
-            if(c != '.'){
-                Pair<Integer,Character> action = new Pair<>(i,c);
-                bfsQ.offer(action);
-            }            
+    public String pushDominoes(String S) {
+        char[] A = S.toCharArray();
+        int N = A.length;
+        int[] forces = new int[N];
+
+        // Populate forces going from left to right
+        int force = 0;
+        for (int i = 0; i < N; ++i) {
+            if (A[i] == 'R') force = N;
+            else if (A[i] == 'L') force = 0;
+            else force = Math.max(force - 1, 0);
+            forces[i] += force;
         }
-        StringBuilder newDominoes = new StringBuilder(dominoes);
-        while(!bfsQ.isEmpty()){
-            int size = bfsQ.size();            
-            while(size-- > 0){
-                Pair<Integer,Character> push = bfsQ.poll();
-                if(push.getValue() == 'L'){
-                    if(push.getKey() - 1 >= 0 && dominoes.charAt(push.getKey()-1) == '.'){
-                        if(push.getKey() - 2 >= 0) {
-                            if(dominoes.charAt(push.getKey()-2) != 'R'){ 
-                                newDominoes.setCharAt(push.getKey()-1, 'L');
-                                Pair<Integer,Character> action = new Pair<>(push.getKey()-1,'L');
-                                bfsQ.offer(action);
-                            }
-                        }else {
-                            newDominoes.setCharAt(push.getKey()-1,'L');
-                        }
-                    }
-                }else {
-                    if(push.getKey() + 1 < len && dominoes.charAt(push.getKey()+1) == '.'){
-                        if(push.getKey() + 2 < len){
-                            if(dominoes.charAt(push.getKey()+2) != 'L'){ 
-                                newDominoes.setCharAt(push.getKey()+1,'R');
-                                Pair<Integer,Character> action = new Pair<>(push.getKey()+1,'R');
-                                bfsQ.offer(action);
-                            }
-                        }else {
-                            newDominoes.setCharAt(push.getKey()+1,'R');
-                        }
-                    }
-                }
-            }
-            dominoes = newDominoes.toString();
+
+        // Populate forces going from right to left
+        force = 0;
+        for (int i = N-1; i >= 0; --i) {
+            if (A[i] == 'L') force = N;
+            else if (A[i] == 'R') force = 0;
+            else force = Math.max(force - 1, 0);
+            forces[i] -= force;
         }
-        return dominoes;
+
+        StringBuilder ans = new StringBuilder();
+        for (int f: forces)
+            ans.append(f > 0 ? 'R' : f < 0 ? 'L' : '.');
+        return ans.toString();
     }
 }
