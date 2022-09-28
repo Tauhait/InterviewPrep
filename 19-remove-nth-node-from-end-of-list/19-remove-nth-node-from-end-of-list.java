@@ -9,28 +9,21 @@
  * }
  */
 class Solution {
-    private int index;
-    private ListNode prev;
-    private int capacity;
-    private void helper(ListNode head, int n){
-        if(head == null)
-            return;
-        capacity++;
-        helper(head.next, n);
-        index++;        
-        if(index != n && index != n+1)
-            prev = head;
-        if(index == n+1)
-            head.next = prev;
-        
-    }
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        capacity = 0;
-        index = 0;
-        prev = null;
-        helper(head, n);
-        if(capacity == n)
-            return head.next;
-        return head;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode first = dummy;
+        ListNode second = dummy;
+        // Advances first pointer so that the gap between first and second is n nodes apart
+        for (int i = 1; i <= n + 1; i++) {
+            first = first.next;
+        }
+        // Move first to the end, maintaining the gap
+        while (first != null) {
+            first = first.next;
+            second = second.next;
+        }
+        second.next = second.next.next;
+        return dummy.next;
     }
 }
