@@ -1,33 +1,25 @@
 class Solution {
-    private String s;
-    private int[] memo;
-    
-    private int dp(int i){
-        if(i == 0){
-            return 1;
-        }
-        if(i == 1){
-            return s.charAt(0) != '0' ? 1 : 0;
-        }
-        if(memo[i] == 0){
-            int first = Integer.valueOf(s.substring(i - 1, i));
-            int second = Integer.valueOf(s.substring(i - 2, i));
-            if (first >= 1 && first <= 9) {
-               memo[i] += dp(i - 1);  
-            }
-            if (second >= 10 && second <= 26) {
-                memo[i] += dp(i - 2);
-            } 
-        }
-        return memo[i];
-    }
-    public int numDecodings(String s) {
-        this.s = s;
-        if (this.s == null || this.s.length() == 0) {
+    public int numDecodings(String s) {  
+        if (s.charAt(0) == '0') {
             return 0;
         }
-        int n = this.s.length();
-        memo = new int[n + 1];
-        return dp(n);
+
+        int n = s.length();
+        int twoBack = 1;
+        int oneBack = 1;
+        for (int i = 1; i < n; i++) {
+            int current = 0;
+            if (s.charAt(i) != '0') {
+                current = oneBack;
+            }
+            int twoDigit = Integer.parseInt(s.substring(i - 1, i + 1));
+            if (twoDigit >= 10 && twoDigit <= 26) {
+                current += twoBack;
+            }
+           
+            twoBack = oneBack;
+            oneBack = current;
+        }
+        return oneBack;
     }
 }
