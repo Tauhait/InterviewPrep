@@ -1,28 +1,24 @@
 class Solution {
-    private Integer[][] memo;
-    private final int MOD = 1000000007;
-    private int faces;
+    final int MOD = 1000000007;
     
-    private int dp(int dice, int target){
-        if(target < 0){
-            return 0;
-        }
-        if(dice == 0){
-            return target == 0 ? 1 : 0;
-        } 
-        if(memo[dice][target] != null){
-            return memo[dice][target];
+    public int numRollsToTarget(int n, int k, int target) {
+        int[][] memo = new int[n + 1][target + 1];
+        // Intialize the base case
+        memo[n][target] = 1;
+        
+        for (int diceIndex = n - 1; diceIndex >= 0; diceIndex--) {
+            for (int currSum = 0; currSum <= target; currSum++) {
+               int ways = 0;
+                
+                // Iterate over the possible face value for current dice
+                for (int i = 1; i <= Math.min(k, target - currSum); i++) {
+                    ways = (ways + memo[diceIndex + 1][currSum + i]) % MOD;
+                }
+                
+                memo[diceIndex][currSum] = ways;
+            }
         }
         
-        long ways = 0;            
-        for(int face = 1; face <= faces; face++){
-            ways = (ways + dp(dice - 1, target - face)) % MOD;
-        }
-        return memo[dice][target] = (int)ways;
-    }
-    public int numRollsToTarget(int n, int k, int target) {
-        memo = new Integer[n + 1][target + 1];//decide which variables to store in memo
-        faces = k;//constant for all dices
-        return dp(n, target);
+        return memo[0][0];
     }
 }
