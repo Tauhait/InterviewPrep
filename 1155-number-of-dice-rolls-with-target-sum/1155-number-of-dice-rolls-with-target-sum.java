@@ -21,18 +21,8 @@ class Solution {
         return memo[dice][target] = (int)ways;
     }
     public int numRollsToTarget(int n, int k, int target) {
-        memo = new Integer[n + 1][target + 1];
-        faces = k;
+        memo = new Integer[n + 1][target + 1];//decide which variables to store in memo
+        faces = k;//constant for all dices
         return dp(n, target);
-        // return dp(n, k, target);
     }
-    // public int dp(int d, int f, int target) {
-    //     if(d==0||target<0) return target==0?1:0;
-    //     if(memo[d][target]!=null) return memo[d][target];
-    //     int ways=0;
-    //     for(int i=1;i<=f;i++) ways=(ways+dp(d-1,f,target-i))%1000000007; 
-    //     return memo[d][target]=ways;
-    // }
 }
-
-    
