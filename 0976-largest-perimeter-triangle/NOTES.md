@@ -1,0 +1,1 @@
+The length of any side of a triangle is shorter than the sum of the other two sides. So if a, b, c are the three-length of any triangle Then for a >= b >= c, a,b,c can form a triangle if b + c > a.
