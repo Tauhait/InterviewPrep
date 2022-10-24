@@ -1,24 +1,27 @@
 class Solution {
-    final int MOD = 1000000007;
+    private Integer[][] memo;
+    private int target;
+    private final int MOD = 1_000_000_007;
+    private int n, k;
     
+    private int dp(int die, int sum){
+        if(die == n)
+            return sum == target ? 1 : 0;
+        
+        if(memo[die][sum] != null)
+            return memo[die][sum];
+
+        int ways = 0;
+        for(int face = 1; face <= Math.min(k, target-sum); face++)
+            ways = (ways + dp(die+1, sum+face)) % MOD;
+        
+        return memo[die][sum] = ways;
+    }
     public int numRollsToTarget(int n, int k, int target) {
-        int[][] memo = new int[n + 1][target + 1];
-        // Intialize the base case
-        memo[n][target] = 1;
-        
-        for (int diceIndex = n - 1; diceIndex >= 0; diceIndex--) {
-            for (int currSum = 0; currSum <= target; currSum++) {
-               int ways = 0;
-                
-                // Iterate over the possible face value for current dice
-                for (int i = 1; i <= Math.min(k, target - currSum); i++) {
-                    ways = (ways + memo[diceIndex + 1][currSum + i]) % MOD;
-                }
-                
-                memo[diceIndex][currSum] = ways;
-            }
-        }
-        
-        return memo[0][0];
+        this.n = n;
+        this.k = k;
+        this.target = target;
+        memo = new Integer[n+1][target+1];
+        return dp(0, 0);
     }
 }
