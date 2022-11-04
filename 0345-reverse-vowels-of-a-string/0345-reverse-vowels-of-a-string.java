@@ -1,23 +1,40 @@
 class Solution {
+    // Return true if the character is a vowel (case-insensitive)
+    boolean isVowel(char c) {
+        return c == 'a' || c == 'i' || c == 'e' || c == 'o' || c == 'u'
+            || c == 'A' || c == 'I' || c == 'E' || c == 'O' || c == 'U';
+    }
+    
+    // Function to swap characters at index x and y
+    void swap(char[] chars, int x, int y) {
+        char temp = chars[x];
+        chars[x] = chars[y];
+        chars[y] = temp;
+    }
+    
     public String reverseVowels(String s) {
-        Deque<Integer> vowelPos = new LinkedList<>();
-        for(int i = 0; i < s.length(); i++){
-            char c = s.charAt(i);
-            if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || 
-               c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U')
-                vowelPos.add(i);
+        int start = 0;
+        int end  = s.length() - 1;
+        // Convert String to char array as String is immutable in Java
+        char[] sChar = s.toCharArray();
+        
+        // While we still have characters to traverse
+        while (start < end) {
+            // Find the leftmost vowel
+            while (start < s.length () && !isVowel(sChar[start])) {
+                start++;
+            }
+            // Find the rightmost vowel
+            while (end >= 0 && !isVowel(sChar[end])) {
+                end--;
+            }
+            // Swap them if start is left of end
+            if (start < end) {
+                swap(sChar, start++, end--);
+            }
         }
-        StringBuilder ans = new StringBuilder(s);
-        while(vowelPos.size() > 1){
-            int front = vowelPos.getFirst();
-            int last  = vowelPos.getLast();
-            char f = ans.charAt(front);
-            char l = ans.charAt(last);
-            ans.setCharAt(front, l);
-            ans.setCharAt(last, f);
-            vowelPos.removeFirst();
-            vowelPos.removeLast();
-        }
-        return ans.toString();
+        
+        // Converting char array back to String
+        return new String(sChar);
     }
 }
