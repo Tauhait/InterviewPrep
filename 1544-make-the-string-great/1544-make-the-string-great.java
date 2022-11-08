@@ -5,7 +5,9 @@ class Solution {
         int pos = 0;
         while(pos < s.length()){
             int thisChar = s.charAt(pos++);
-            if(!stk.isEmpty() && Math.abs(stk.peek()-thisChar) == 32)
+            if(!stk.isEmpty() && 
+               // Math.abs(stk.peek()-thisChar) == 32
+               (stk.peek() ^ thisChar) == 32)
                 stk.pop();
             else
                 stk.push((char)thisChar);
