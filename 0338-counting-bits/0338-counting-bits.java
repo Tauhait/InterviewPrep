@@ -1,17 +1,12 @@
-public class Solution {
-    private int popCount(int x) {
-        int count;
-        for (count = 0; x != 0; ++count) {
-            x &= x - 1; // zeroing out the least significant nonzero bit
-        }
-        return count;
-    }
-
+class Solution {
     public int[] countBits(int n) {
-        int[] ans = new int[n + 1];
-        for (int x = 0; x <= n; ++x) {
-            ans[x] = popCount(x);
+        int[] memo = new int[n+1];
+        int offset = 1;
+        for(int i = 1; i <= n; i++){
+            if(offset * 2 == i)
+                offset = i;
+            memo[i] = 1 + memo[i-offset];
         }
-        return ans;
+        return memo;
     }
 }
