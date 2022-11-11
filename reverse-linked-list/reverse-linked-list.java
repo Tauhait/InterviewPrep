@@ -3,38 +3,21 @@
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
-//     public ListNode reverseList(ListNode head) {
-//         if(head == null)
-//             return null;
-//         Stack<ListNode> nodeList  = new Stack<>();
-//         while(head.next != null){
-//             nodeList.push(head);
-//             ListNode temp = head.next;
-//             head.next = null;
-//             head = temp;
-//         }
-//         ListNode newHead = head;
-//         while(!nodeList.empty()){
-//             head.next = nodeList.pop();
-//             head = head.next;
-//         }
-//         head.next = null;
-        
-//         return newHead;        
-//     }
-    public ListNode reverseList(ListNode head){
-        if(head == null) return null;
-        ListNode dummyHead = null;
-        while(head != null){
-            ListNode next = head.next;
-            head.next = dummyHead;
-            dummyHead = head;
-            head = next;
+    public ListNode reverseList(ListNode head) {//5>4>3>2>1
+        ListNode prev = null;
+        ListNode start = head;
+        while(start != null){
+            ListNode nextNode = start.next;
+            start.next = prev;
+            prev = start;
+            start = nextNode;
         }
-        return dummyHead;
+        return prev;
     }
 }
