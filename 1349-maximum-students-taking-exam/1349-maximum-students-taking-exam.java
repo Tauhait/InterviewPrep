@@ -1,50 +1,36 @@
+// https://leetcode.com/problems/maximum-students-taking-exam/discuss/503598/JAVA-DFS-with-memoization-represent-the-states-as-a-string.
 class Solution {
     int m, n;
     Map<String, Integer> memo;
+    int[][] dirs = {{0, 1}, {0, -1}, {1, -1}, {1, 1}};
     public int maxStudents(char[][] seats) {
-        m=seats.length;
-        if(m==0) return 0;
+        m = seats.length;
         n = seats[0].length;
-        
-        memo = new HashMap<String, Integer>();
+        memo = new HashMap<>();
         StringBuilder sb = new StringBuilder();
-        for(char[] row: seats){
-            sb.append(row);
-        }
-        
+        for (char[] row : seats) sb.append(row);
         return dfs(sb.toString());
     }
-	
-	/* dfs returns the max student we can place if start with the given state */
-
-    public int dfs(String state){
-        if(memo.containsKey(state)) return memo.get(state);
-        int max = 0;
-        char[] C = state.toCharArray();
-        for(int i = 0; i<m; i++){
-            for(int j = 0; j<n; j++){
-			//we see an empty seat, there are two choices, place a student here or leave it empty.
-                if(C[i*n+j]== '.'){
-                    //choice (1): we choose not to place a student, but we place a x to mark this seat as unanvailable
-					// so we don't repeatedly search this state again. 
-					
-                    C[i*n+j] = 'x';
-                    max = Math.max(max, dfs(new String(C)));
-     
-					 //choice (2): we place a student, but this makes left, right, bottom left, bottom right seat unavailable. 
-                    if(j+1<n){
-                        if(i<m-1 && C[(i+1)*n+j+1] == '.') C[(i+1)*n+j+1] = 'x';
-                        if(C[i*n+j+1] == '.') C[i*n+j+1] = 'x';
+    
+    private int dfs(String state) {
+        if (memo.containsKey(state)) return memo.get(state);
+        int res = 0;
+        char[] s = state.toCharArray();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (s[i * n + j] == '.') {
+                    s[i * n + j] = 'x';  //pick empty seat
+                    res = Math.max(res, dfs(new String(s))); //放弃seat，我们这里不+1
+                    for (int[] dir : dirs) { //lock seats
+                        int x = i + dir[0], y = j + dir[1];
+                        if (x < 0 || x >= m || y < 0 || y >= n) continue;
+                        if (s[x * n + y] == '.') s[x * n + y] = 'x';
                     }
-                    if(j-1>=0){
-                        if(i<m-1 && C[(i+1)*n+j-1] == '.') C[(i+1)*n+j-1]= 'x';
-                        if(C[i*n+j-1] == '.') C[i*n+j-1] = 'x';
-                    }
-                    max = Math.max(max, 1+dfs(new String(C)));
+                    res = Math.max(res, dfs(new String(s)) + 1); //1，3间隔的点在这里被覆盖到了。只有ban seat之后我们算+1
                 }
             }
         }
-        memo.put(state, max);
-        return max; 
+        memo.put(state, res);
+        return res;
     }
 }
