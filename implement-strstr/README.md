@@ -1,24 +1,19 @@
-<h2>  Implement strStr()</h2><hr><div><p>Implement <a href="http://www.cplusplus.com/reference/cstring/strstr/" target="_blank">strStr()</a>.</p>
-
-<p>Given two strings <code>needle</code> and <code>haystack</code>, return the index of the first occurrence of <code>needle</code> in <code>haystack</code>, or <code>-1</code> if <code>needle</code> is not part of <code>haystack</code>.</p>
-
-<p><strong>Clarification:</strong></p>
-
-<p>What should we return when <code>needle</code> is an empty string? This is a great question to ask during an interview.</p>
-
-<p>For the purpose of this problem, we will return 0 when <code>needle</code> is an empty string. This is consistent to C's <a href="http://www.cplusplus.com/reference/cstring/strstr/" target="_blank">strstr()</a> and Java's <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html#indexOf(java.lang.String)" target="_blank">indexOf()</a>.</p>
+<h2>  Implement strStr()</h2><hr><div><p>Given two strings <code>needle</code> and <code>haystack</code>, return the index of the first occurrence of <code>needle</code> in <code>haystack</code>, or <code>-1</code> if <code>needle</code> is not part of <code>haystack</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
-<pre><strong>Input:</strong> haystack = "hello", needle = "ll"
-<strong>Output:</strong> 2
+<pre><strong>Input:</strong> haystack = "sadbutsad", needle = "sad"
+<strong>Output:</strong> 0
+<strong>Explanation:</strong> "sad" occurs at index 0 and 6.
+The first occurrence is at index 0, so we return 0.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
-<pre><strong>Input:</strong> haystack = "aaaaa", needle = "bba"
+<pre><strong>Input:</strong> haystack = "leetcode", needle = "leeto"
 <strong>Output:</strong> -1
+<strong>Explanation:</strong> "leeto" did not occur in "leetcode", so we return -1.
 </pre>
 
 <p>&nbsp;</p>
