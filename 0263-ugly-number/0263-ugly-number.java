@@ -1,28 +1,25 @@
 class Solution {
-    public boolean primeFactors(int n){
-        Set<Integer> set = new HashSet<Integer>();
-        while (n % 2 == 0){
-            n /= 2;
-            set.add(2);
-        }
-        for (int i = 3; i <= Math.sqrt(n); i += 2){
-            while (n % i == 0){
-                if(i != 3 && i != 5)
-                    return false;
-                set.add(i);
-                n /= i;
-            }
-        }
-        for(int s : set)
-            if(s != 2 && s != 3 && s != 5)
-                return false;
-        if(n > 5)
-            return false;
-        return true;
-    }
     public boolean isUgly(int n) {
-        if(n <= 0)
+        // A non-positive integer cannot be ugly
+        if (n <= 0) {
             return false;
-        return primeFactors(n);
+        }
+
+        // Factorize by dividing with permitted factors
+        for (int factor : new int[] { 2, 3, 5 }) {
+            n = keepDividingWhenDivisible(n, factor);
+        }
+
+        // Check if the integer is reduced to 1 or not.
+        return n == 1;
+    }
+
+    // Keep dividing dividend by divisor when division is possible.
+    private int keepDividingWhenDivisible(int dividend, int divisor) {
+        while (dividend % divisor == 0) {
+            dividend /= divisor;
+            ;
+        }
+        return dividend;
     }
 }
