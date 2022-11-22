@@ -1,37 +1,24 @@
 class Solution {
-        /*
-    Note: in a typical BFS algorithm, the queue variable usually would be of array or list type. 
-    However, here we use the set type, in order to eliminate the redundancy of remainders within the same level. 
-    As it turns out, this tiny trick could even provide a 5 times speedup on running time.
-    */
     public int numSquares(int n) {
+        int dp[] = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        // bottom case
+        dp[0] = 0;
 
-        ArrayList<Integer> squares = new ArrayList<Integer>();
-        for (int i = 1; i * i <= n; i++) {
-            squares.add(i * i);
+        // pre-calculate the square numbers.
+        int max_square_index = (int) Math.sqrt(n) + 1;
+        int square_nums[] = new int[max_square_index];
+        for (int i = 1; i < max_square_index; ++i) {
+          square_nums[i] = i * i;
         }
 
-        Set<Integer> remainders = new HashSet<Integer>();
-        remainders.add(n);
-
-        int level = 0;
-        while (remainders.size() > 0) {
-              level += 1;
-              Set<Integer> next_remainders = new HashSet<Integer>();
-                //runs at each level
-              for (Integer remainder : remainders) {
-                    for (Integer square : squares) {
-                          if (remainder.equals(square))
-                            return level;
-                          else if (remainder > square)
-                            next_remainders.add(remainder - square);
-                          else
-                              break;
-                        //if rem <  current sq, then it will happen for rest of the sq in the list so break
-                    }
-              }
-              remainders = next_remainders;
+        for (int i = 1; i <= n; ++i) {
+          for (int s = 1; s < max_square_index; ++s) {
+            if (i < square_nums[s])
+              break;
+            dp[i] = Math.min(dp[i], dp[i - square_nums[s]] + 1);
+          }
         }
-        return level;
+        return dp[n];
     }
 }
