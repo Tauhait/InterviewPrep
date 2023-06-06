@@ -1,14 +1,16 @@
 class Solution {
     public int majorityElement(int[] nums) {
+        int majorityElement = 0;
         int n = nums.length;
-        Integer candidate = null;
-        int count = 0;
-        for(int num : nums){
-            if(count == 0){
-                candidate = num;
+        for(int i = 0; i < 32; i++){
+            int setBit = 1 << i;
+            int count = 0;
+            for(int num : nums){
+                int isSet = num & setBit;
+                if(isSet != 0) count++;
             }
-            count += num == candidate ? 1 : -1;
+            if(count > n/2) majorityElement |= setBit;
         }
-        return candidate;
+        return majorityElement;
     }
 }
