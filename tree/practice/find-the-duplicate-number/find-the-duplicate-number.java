@@ -1,19 +1,23 @@
 class Solution {
     public int findDuplicate(int[] nums) {
-        int duplicate = -1;
-        for (int i = 0; i < nums.length; i++) {
-            int cur = Math.abs(nums[i]);
-            if (nums[cur] < 0) {
-                duplicate = cur;
-                break;
-            }
-            nums[cur] *= -1;
-        }
         
-        // Restore numbers
-        for (int i = 0; i < nums.length; i++)
-            nums[i] = Math.abs(nums[i]);
+        // Find the intersection point of the two runners.
+        int tortoise = nums[0];
+        int hare = nums[0];
+        
+        do {
+            tortoise = nums[tortoise];
+            hare = nums[nums[hare]];
+        } while (tortoise != hare);
 
-        return duplicate;
+        // Find the "entrance" to the cycle.
+        tortoise = nums[0];
+        
+        while (tortoise != hare) {
+            tortoise = nums[tortoise];
+            hare = nums[hare];
+        }
+
+        return hare;
     }
 }
