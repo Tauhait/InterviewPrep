@@ -1,14 +1,24 @@
 class Solution {
-    private int _merge(int[] nums, int left, int mid, int right){
+    private int _countReversePair(int[] nums, int left, int mid, int right){
         int i = left, j = mid+1;
         int reversePairs = 0;
         for(;i <= mid; i++){
-            while((j <= right) && (nums[i] > (2*(long)nums[j]))) j++;
+            long leftItem = nums[i];
+            long rightItem = 0;
+            if(j <= right) rightItem = nums[j];
+            while((j <= right) && (leftItem > (2*rightItem))) {
+                j++;
+                if(j <= right) rightItem = nums[j];                
+            }
             reversePairs += (j-(mid+1));            
         }
+        return reversePairs;
+    }
+    private int _merge(int[] nums, int left, int mid, int right){
+        int reversePairs = _countReversePair(nums, left, mid, right);
 
         ArrayList<Integer> temp = new ArrayList<>(); 
-        i = left; j = mid+1; 
+        int i = left, j = mid+1; 
         while(i <= mid && j<=right) {
             if(nums[i]<=nums[j]) {
                 temp.add(nums[i++]); 
