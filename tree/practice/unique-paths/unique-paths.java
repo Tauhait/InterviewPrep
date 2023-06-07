@@ -1,12 +1,11 @@
 class Solution {
     public int uniquePaths(int m, int n) {
-        int[][] d = new int[m][n];
-        for(int[] arr : d) Arrays.fill(arr, 1);        
-        for(int row = 1; row < m; row++) {
-            for(int col = 1; col < n; col++) {
-                d[row][col] = d[row - 1][col] + d[row][col - 1];
-            }
+        int N = m + n - 2;
+        int r = m - 1;
+        long result = 1;
+        for(int i = 1; i < m; i++){
+            result = result * (N-r+i)/i;
         }
-        return d[m - 1][n - 1];
+        return (int)result;
     }
 }
