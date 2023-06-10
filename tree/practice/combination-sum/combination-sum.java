@@ -7,7 +7,7 @@ class Solution {
         }
         else if(start < nums.length && nums[start] <= target){
             for(int i = start; i < nums.length; i++){
-                if(i > start && nums[i] == nums[i-1]) continue;
+                // if(i > start && nums[i] == nums[i-1]) continue;
                 subset.add(nums[i]);
                 findCombinations(nums, target-nums[i], i, subset);
                 subset.remove(subset.size()-1);
