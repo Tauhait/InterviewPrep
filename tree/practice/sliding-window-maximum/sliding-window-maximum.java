@@ -4,16 +4,20 @@ class Solution {
         int n = nums.length;
         int[] ans = new int[n - k + 1];
         int index = 0;
-        Deque<Integer> deque = new ArrayDeque<>();// store indexes of elements in dcr order
+        Deque<Integer> indexDeque = new ArrayDeque<>();// store indexes of elements in dcr order
         for(int i = 0; i < nums.length; i++){
             //before processing current nums[i] check if window in deque is valid
-            if(!deque.isEmpty() && deque.getFirst() == i - k) deque.removeFirst();
+            if(!indexDeque.isEmpty() && indexDeque.getFirst() == i - k) 
+                indexDeque.removeFirst();
 
             // remove from end in deque indexes where current nums[i] > elements
-            while(!deque.isEmpty() && nums[deque.getLast()] <= nums[i]) deque.removeLast();
+            while(!indexDeque.isEmpty() && nums[indexDeque.getLast()] <= nums[i]) 
+                indexDeque.removeLast();
 
-            deque.addLast(i);
-            if(i >= k - 1) ans[index++] = nums[deque.peekFirst()];
+            indexDeque.addLast(i);
+
+            if(i >= k - 1) 
+                ans[index++] = nums[indexDeque.peekFirst()];// first element will be the largest as we store in dcr order inside deque
         }
         return ans;
     }
