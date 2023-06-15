@@ -1,14 +1,17 @@
 class Solution {
     private final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
-    private void fillRottenOranges(int[][] grid, Deque<int[]> rottensQ){
+    private int fillRottenOranges(int[][] grid, Deque<int[]> rottensQ){
         int r = grid.length;
         int c = grid[0].length;
+        int freshOranges = 0;
         for(int i = 0; i < r; i++){
             for(int j = 0; j < c; j++){
                 if(grid[i][j] == 2) rottensQ.addLast(new int[]{i, j});
+                else if(grid[i][j] == 1) ++freshOranges;
             }
         }
+        return freshOranges;
     }
 
     private boolean hasFreshOrange(int[][] grid){
@@ -22,7 +25,7 @@ class Solution {
         return false;
     }
 
-    private int bfs(int[][] grid, Deque<int[]> rottensQ){
+    private int bfs(int[][] grid, Deque<int[]> rottensQ, int freshOranges){
         int r = grid.length;
         int c = grid[0].length;
         int mins = -1;
@@ -38,18 +41,19 @@ class Solution {
                        grid[nextRow][nextCol] == 1){
                            rottensQ.addLast(new int[]{nextRow, nextCol});
                            grid[nextRow][nextCol] = 2;
+                           freshOranges--;
                     }
                 }
             }
             mins++;
         }
-        return mins;
+        return freshOranges == 0 ? mins : -1;
     }
 
     public int orangesRotting(int[][] grid) {
         Deque<int[]> rottensQ = new ArrayDeque<>();
-        fillRottenOranges(grid, rottensQ);
-        int ans = Math.max(0, bfs(grid, rottensQ));
-        return hasFreshOrange(grid) ? -1 : ans;
+        int freshOranges = fillRottenOranges(grid, rottensQ);
+        if(freshOranges == 0) return 0;
+        return bfs(grid, rottensQ, freshOranges);
     }
 }
