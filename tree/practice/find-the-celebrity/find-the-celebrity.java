@@ -8,13 +8,11 @@ public class Solution extends Relation {
     @Override
     public boolean knows(int a, int b){
         Pair<Integer,Integer> pairAB = new Pair<>(a, b);
-        if( pairKnowsMap.containsKey(pairAB)){
-            return pairKnowsMap.get(pairAB);
-        } else {
+        if( !pairKnowsMap.containsKey(pairAB)){
             boolean doesAKnowB = super.knows(a, b);
             pairKnowsMap.put(pairAB, doesAKnowB);
-            return doesAKnowB;
         }
+        return pairKnowsMap.get(pairAB);
     }
 
     private boolean isCelebrity(int celebrityCandidate){
