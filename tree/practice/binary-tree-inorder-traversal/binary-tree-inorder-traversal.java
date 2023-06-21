@@ -14,19 +14,31 @@
  * }
  */
 class Solution {
-    public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> res = new ArrayList<>();
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode curr = root;
-        while (curr != null || !stack.isEmpty()) {
-            while (curr != null) {
-                stack.push(curr);
-                curr = curr.left;
+    public List<Integer> morrisInorderTraversal(TreeNode root) {
+        List<Integer> inorder = new ArrayList<>();
+        TreeNode cur = root;
+        while(cur != null){
+            if(cur.left == null){
+                inorder.add(cur.val);
+                cur = cur.right;
+            } else {
+                TreeNode prev = cur.left;
+                while(prev.right != null && prev.right != cur){
+                    prev = prev.right;
+                }
+                if(prev.right == null){
+                    prev.right = cur;
+                    cur = cur.left;
+                } else {
+                    prev.right = null;
+                    inorder.add(cur.val);
+                    cur = cur.right;
+                }
             }
-            curr = stack.pop();
-            res.add(curr.val);
-            curr = curr.right;
         }
-        return res;
+        return inorder;
+    }
+    public List<Integer> inorderTraversal(TreeNode root) {
+        return morrisInorderTraversal(root);
     }
 }
