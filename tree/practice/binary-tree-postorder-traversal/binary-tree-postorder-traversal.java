@@ -13,9 +13,27 @@
  *     }
  * }
  */
+
 class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
-        return morrisPostorderTraversal(root);
+        // return morrisPostorderTraversal(root);
+        return iterativePostorderTraversal(root);
+    }
+
+    public List<Integer> iterativePostorderTraversal(TreeNode root){
+        LinkedList<Integer> postorder = new LinkedList<>();
+        if(root == null) return postorder;
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while(!stack.isEmpty()){
+            TreeNode cur = stack.pop();
+            if(cur != null){
+                stack.push(cur.left);
+                stack.push(cur.right);
+                postorder.addFirst(cur.val);
+            }
+        }
+        return postorder;
     }
 
     public List<Integer> morrisPostorderTraversal(TreeNode root) { // LRRo
