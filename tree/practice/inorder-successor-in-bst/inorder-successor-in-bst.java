@@ -22,21 +22,22 @@ class Solution {
             inorderSuccessorNode = leftmost;            
         } else {            
             // Case 2: We need to perform the standard inorder traversal and keep track of the previous node.
-            inorderSucc(root, p);
+            findInorderSuccUsingPrevious(root, p);
         }
         return inorderSuccessorNode;     
     }
 
-    private void inorderSucc(TreeNode node, TreeNode p){
+    private void findInorderSuccUsingPrevious(TreeNode node, TreeNode p){
       if(node == null) return;
-      inorderSucc(node.left, p);
+      findInorderSuccUsingPrevious(node.left, p);
+      if(inorderSuccessorNode != null) return;
       // Check if previous is the inorder predecessor of node
-      if(previous == p && inorderSuccessorNode == null) { 
-        this.inorderSuccessorNode = node;
+      if(previous == p) { 
+        inorderSuccessorNode = node;
         return;
       }
       // Keeping previous up-to-date for further recursions
       previous = node;
-      inorderSucc(node.right, p);
+      findInorderSuccUsingPrevious(node.right, p);
     }
 }
