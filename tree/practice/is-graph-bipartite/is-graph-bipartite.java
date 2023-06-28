@@ -1,57 +1,28 @@
 class Solution {
     public boolean isBipartite(int[][] graph) {
-        int nodes = graph.length;
-        
-        UnionFind uf = new UnionFind(nodes);
-        
-        for(int i = 0; i < graph.length; i++){
-            int nodeParent = uf.find(i);
-            for(int edge : graph[i]){
-                if(nodeParent == uf.find(edge)){
-                    return false;
+        int n = graph.length;
+        int[] color = new int[n];
+        Arrays.fill(color, -1);
+
+        for (int start = 0; start < n; ++start) {
+            if (color[start] == -1) {
+                Stack<Integer> stack = new Stack();
+                stack.push(start);
+                color[start] = 0;
+
+                while (!stack.empty()) {
+                    Integer node = stack.pop();
+                    for (int nei: graph[node]) {
+                        if (color[nei] == -1) {
+                            stack.push(nei);
+                            color[nei] = 1 - color[node];
+                        } else if (color[nei] == color[node]) {
+                            return false;
+                        }
+                    }
                 }
-                uf.union(graph[i][0], edge);
             }
         }
         return true;
-    }
-}
-class UnionFind {
-    private int[] group;
-    private int[] rank;
-    
-    public int[] getGroup(){
-        return group;
-    }
-    public int[] getRank(){
-        return rank;
-    }
-    public UnionFind(int size){
-        group = new int[size];
-        rank = new int[size];
-        for(int i = 0; i < size; i++){
-            group[i] = i;
-            rank[i] = 0;
-        }
-    }
-    
-    public void union(int x, int y){
-        int groupX = find(x);
-        int groupY = find(y);
-        if(groupX != groupY){
-            if(rank[groupX] > rank[groupY]){
-                group[groupY] = groupX;
-            }else if(rank[groupX] < rank[groupY]){
-                group[groupX] = groupY;
-            }else {
-                group[groupX] = groupY;
-                rank[groupX]++;
-            }
-        }
-    }
-    
-    public int find(int node){
-        if(node != group[node]) group[node] = find(group[node]);
-        return group[node];
     }
 }
