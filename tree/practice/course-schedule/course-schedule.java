@@ -1,33 +1,37 @@
 class Solution {
-    private boolean dfs(int node, Map<Integer, List<Integer>> adj, Map<Integer, Integer> visited){
-        if(visited.containsKey(node)) return visited.get(node) == 2;
-        visited.put(node, 1);
-        for(int neighbor : adj.get(node)){
-            if(!dfs(neighbor, adj, visited)) return false;
-            visited.put(neighbor, 2);
-        }
-        return true;
-    }
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        if(prerequisites.length == 0) return true;
-        Map<Integer, List<Integer>> adj = new HashMap<>();
-        for(int i = 0; i < numCourses; i++){
-            adj.put(i, new ArrayList<Integer>());
-        }
-        for(int[] prerequisite : prerequisites){
-            int course = prerequisite[0];
-            int prereq = prerequisite[1];
-            List<Integer> prerequisiteList = adj.get(course);
-            prerequisiteList.add(prereq);            
-        }
-        Map<Integer, Integer> complete = new HashMap<>();
-        for(int course : adj.keySet()){
-            if(!complete.containsKey(course) && dfs(course, adj, complete)){
-                complete.put(course, 2);
+    public boolean dfs(int node, List<List<Integer>> adj, boolean[] visit, boolean[] inStack) {
+        // If the node is already in the stack, we have a cycle.
+        if (inStack[node]) return false;
+        if (visit[node]) return true;
+        // Mark the current node as visited and part of current recursion stack.
+        visit[node] = true;
+        inStack[node] = true;
+        for (int neighbor : adj.get(node)) {
+            if (!dfs(neighbor, adj, visit, inStack)) {
+                return false;
             }
         }
-        for(int course : complete.keySet()){
-            if(complete.get(course) != 2) return false;
+        // Remove the node from the stack.
+        inStack[node] = false;
+        return true;
+    }
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> adj = new ArrayList<>(numCourses);
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        for (int[] prerequisite : prerequisites) {
+            adj.get(prerequisite[1]).add(prerequisite[0]);
+        }
+
+        boolean[] visit = new boolean[numCourses];
+        boolean[] inStack = new boolean[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            if (!dfs(i, adj, visit, inStack)) {
+                return false;
+            }
         }
         return true;
     }
